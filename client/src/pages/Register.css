@@ -1,0 +1,73 @@
+.register-container {
+  min-height: 100vh;
+  background: #09090b;
+  position: relative;
+  overflow: hidden;
+}
+
+.register-container::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.register-container::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -10%;
+  width: 40vw;
+  height: 40vw;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.register-glass {
+  background: rgba(24, 24, 27, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 10;
+}
+
+/* Custom Scrollbar for form if needed */
+.register-glass::-webkit-scrollbar {
+  width: 4px;
+}
+
+.register-glass::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.register-glass::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+/* Input focus effects */
+input:focus {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+@media (max-width: 640px) {
+  .register-glass {
+    padding: 1.5rem;
+    border-radius: 2rem;
+  }
+}
