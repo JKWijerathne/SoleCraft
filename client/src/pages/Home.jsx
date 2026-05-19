@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, reset } from '../store/slices/productSlice';
-import ProductCard from '../components/ProductCard';
+import ProductCard from '../components/ProductCard.jsx';
 import { Loader2, AlertCircle, ArrowRight, Zap, ShieldCheck, Truck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './Home.css';
@@ -12,7 +12,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(fetchProducts());
-    
+
     return () => {
       dispatch(reset());
     };
@@ -76,9 +76,9 @@ const Home = () => {
             className="relative"
           >
             <div className="relative z-10 drop-shadow-[0_35px_35px_rgba(139,92,246,0.3)]">
-              <img 
-                src="/hero-sneaker.png" 
-                alt="Featured Sneaker" 
+              <img
+                src="/hero-sneaker.png"
+                alt="Featured Sneaker"
                 className="w-full h-auto object-contain transform hover:scale-105 transition-transform duration-700"
               />
             </div>
@@ -96,7 +96,7 @@ const Home = () => {
             { icon: <ShieldCheck className="w-8 h-8 text-green-400" />, title: "Authentic Only", desc: "Every pair is verified by our team of experts." },
             { icon: <Truck className="w-8 h-8 text-blue-400" />, title: "Express Shipping", desc: "Get your kicks delivered in record time." }
           ].map((feature, i) => (
-            <motion.div 
+            <motion.div
               key={i}
               whileHover={{ y: -10 }}
               className="p-8 rounded-[2rem] bg-white/5 border border-white/5 hover:border-white/10 transition-all"
@@ -141,7 +141,7 @@ const Home = () => {
               <p className="text-gray-600 font-medium tracking-wide uppercase text-xs">New arrivals dropping soon</p>
             </div>
           ) : (
-            <motion.div 
+            <motion.div
               variants={containerVariants}
               initial="hidden"
               whileInView="visible"
@@ -157,50 +157,43 @@ const Home = () => {
           )}
 
           <div className="mt-20 text-center">
-             <button className="px-12 py-5 border-2 border-white/10 rounded-2xl text-white font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-500">
-               View All Products
-             </button>
+            <button className="px-12 py-5 border-2 border-white/10 rounded-2xl text-white font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-500">
+              View All Products
+            </button>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="py-24 px-6 relative overflow-hidden">
-         <div className="max-w-7xl mx-auto p-12 md:p-20 rounded-[3.5rem] bg-gradient-to-br from-purple-600 to-blue-700 relative overflow-hidden shadow-3xl shadow-purple-500/20">
-            <div className="relative z-10 max-w-2xl">
-               <h2 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter text-white leading-none mb-8">
-                  Get Notified <br />On Drops.
-               </h2>
-               <p className="text-purple-100 text-lg font-medium mb-10 opacity-80">
-                  Be the first to know about secret releases, restocks, and exclusive member discounts.
-               </p>
-               <form className="flex flex-col sm:flex-row gap-4">
-                  <input 
-                    type="email" 
-                    placeholder="ENTER YOUR EMAIL" 
-                    className="flex-1 px-8 py-5 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all font-bold tracking-widest"
-                  />
-                  <button className="px-10 py-5 bg-white text-black font-black uppercase tracking-widest rounded-2xl hover:bg-gray-100 transition-all shadow-xl">
-                    Subscribe
-                  </button>
-               </form>
-            </div>
-            
-            {/* Abstract Background Design */}
-            <div className="absolute top-0 right-0 w-1/2 h-full pointer-events-none opacity-20">
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] rotate-45">
-                  <div className="w-full h-full border-[40px] border-white rounded-full" />
-               </div>
-            </div>
-         </div>
-      </section>
+        <div className="max-w-7xl mx-auto p-12 md:p-20 rounded-[3.5rem] bg-gradient-to-br from-purple-600 to-blue-700 relative overflow-hidden shadow-3xl shadow-purple-500/20">
+          <div className="relative z-10 max-w-2xl">
+            <h2 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter text-white leading-none mb-8">
+              Get Notified <br />On Drops.
+            </h2>
+            <p className="text-purple-100 text-lg font-medium mb-10 opacity-80">
+              Be the first to know about secret releases, restocks, and exclusive member discounts.
+            </p>
+            <form className="flex flex-col sm:flex-row gap-4">
+              <input
+                type="email"
+                placeholder="ENTER YOUR EMAIL"
+                className="flex-1 px-8 py-5 bg-white/10 border border-white/20 rounded-2xl text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all font-bold tracking-widest"
+              />
+              <button className="px-10 py-5 bg-white text-black font-black uppercase tracking-widest rounded-2xl hover:bg-gray-100 transition-all shadow-xl">
+                Subscribe
+              </button>
+            </form>
+          </div>
 
-      {/* Footer Placeholder */}
-      <footer className="py-12 px-6 border-t border-white/5 text-center">
-         <p className="text-gray-600 font-bold uppercase tracking-[0.5em] text-[10px]">
-           © 2024 SOLECRAFT // BUILT FOR THE STREETS
-         </p>
-      </footer>
+          {/* Abstract Background Design */}
+          <div className="absolute top-0 right-0 w-1/2 h-full pointer-events-none opacity-20">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] rotate-45">
+              <div className="w-full h-full border-[40px] border-white rounded-full" />
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
