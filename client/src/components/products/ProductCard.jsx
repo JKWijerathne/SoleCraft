@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingCart, Heart, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onAddToCart }) => {
   return (
     <motion.div
       whileHover={{ y: -10 }}
@@ -59,7 +59,13 @@ const ProductCard = ({ product }) => {
         </div>
 
         {/* Add to Cart Button */}
-        <button className="w-full mt-2 py-4 bg-white/5 border border-white/10 rounded-2xl text-white font-black uppercase tracking-widest text-xs flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-all duration-300 active:scale-95 group/btn">
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            if (onAddToCart) onAddToCart(product);
+          }}
+          className="w-full mt-2 py-4 bg-white/5 border border-white/10 rounded-2xl text-white font-black uppercase tracking-widest text-xs flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-all duration-300 active:scale-95 group/btn"
+        >
           <ShoppingCart className="w-4 h-4 group-hover/btn:animate-bounce" />
           Add To Cart
         </button>
