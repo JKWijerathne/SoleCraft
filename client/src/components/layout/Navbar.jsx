@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, ShoppingCart, User, LogOut, Search, Menu, X } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout, reset } from '../store/slices/authSlice';
+import { logout, reset } from '../../store/slices/authSlice';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Navbar.css';
 

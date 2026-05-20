@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { register, reset } from '../store/slices/authSlice';
+import { register, reset } from '../../store/slices/authSlice';
 import { Mail, Lock, User, UserPlus, Loader2, AlertCircle, ShoppingBag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './Register.css';

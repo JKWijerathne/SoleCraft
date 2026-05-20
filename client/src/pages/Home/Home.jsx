@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts, reset } from '../store/slices/productSlice';
-import ProductCard from '../components/ProductCard.jsx';
+import { fetchProducts, reset } from '../../store/slices/productSlice';
+import ProductCard from '../../components/products/ProductCard.jsx';
 import { Loader2, AlertCircle, ArrowRight, Zap, ShieldCheck, Truck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './Home.css';
