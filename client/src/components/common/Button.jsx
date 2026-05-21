@@ -13,10 +13,10 @@ const Button = ({
   const baseStyles = "relative flex items-center justify-center gap-3 py-4 px-8 rounded-2xl font-black uppercase tracking-widest text-xs transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group overflow-hidden";
 
   const variants = {
-    primary: "bg-white text-black hover:bg-gray-200 border-2 border-white",
-    secondary: "bg-purple-600 text-white hover:bg-purple-500 shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:shadow-[0_0_30px_rgba(147,51,234,0.5)]",
-    outline: "bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black",
-    ghost: "bg-transparent text-white hover:bg-white/10",
+    primary: "bg-[#F5B942] text-[#071A2F] hover:bg-[#D99A20] border-2 border-[#F5B942] shadow-[0_10px_24px_rgba(245,185,66,0.28)]",
+    secondary: "bg-[#071A2F] text-white hover:bg-[#111827] shadow-[0_10px_24px_rgba(7,26,47,0.25)] hover:shadow-[0_14px_32px_rgba(7,26,47,0.35)]",
+    outline: "bg-white border border-[#CBD5E1]/80 text-[#071A2F] hover:bg-[#071A2F] hover:text-white hover:border-[#071A2F]",
+    ghost: "bg-transparent text-[#071A2F] hover:bg-[#071A2F]/8",
     danger: "bg-red-600 text-white hover:bg-red-500"
   };
 

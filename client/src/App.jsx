@@ -8,7 +8,7 @@ import Register from './pages/Register/Register';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-[#0f172a] text-white selection:bg-purple-500/30">
+      <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-[#111827] selection:bg-[#F5B942]/30 selection:text-[#071A2F]">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />

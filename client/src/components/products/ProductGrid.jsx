@@ -3,7 +3,7 @@ import ProductCard from "./ProductCard";
 const ProductGrid = ({ products, onAddToCart }) => {
   if (!products || products.length === 0) {
     return (
-      <div className="w-full py-16 flex flex-col items-center justify-center text-gray-500">
+      <div className="w-full py-16 flex flex-col items-center justify-center text-[#111827]/55">
         <p className="text-lg font-black uppercase tracking-widest">
           No products available.
         </p>
