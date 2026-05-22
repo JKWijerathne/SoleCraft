@@ -18,6 +18,7 @@ import AdminProducts from './pages/Admin/AdminProducts';
 import AddProduct from './pages/Admin/AddProduct';
 import EditProduct from './pages/Admin/EditProduct';
 import OrderSuccess from './pages/Orders/OrderSuccess';
+import Profile from './pages/Profile/Profile';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-success" element={<OrderSuccess />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin/login" element={<AdminLogin />} />
