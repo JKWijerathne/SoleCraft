@@ -25,13 +25,13 @@ const Men = () => {
     if (product.category?.toLowerCase() !== 'men') return false;
 
     // Type filter
-    if (type && product.type?.toLowerCase() !== type.replace('-', ' ')) return false;
+    if (type && product.type?.toLowerCase() !== type) return false;
     
     // Occasion filter
-    if (occasion && product.occasion?.toLowerCase() !== occasion.replace('-', ' ')) return false;
+    if (occasion && product.occasion?.toLowerCase() !== occasion) return false;
 
     // Style filter
-    if (style && product.style?.toLowerCase() !== style.replace('-', ' ')) return false;
+    if (style && product.style?.toLowerCase() !== style) return false;
 
     // Price filter
     if (priceParam) {

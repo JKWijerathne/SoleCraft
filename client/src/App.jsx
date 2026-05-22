@@ -11,6 +11,12 @@ import Girls from './pages/Girls/Girls';
 import ProductDetails from './pages/ProductDetails/ProductDetails';
 import Cart from './pages/Cart/Cart';
 import Checkout from './pages/Checkout/Checkout';
+import AdminRoute from './routes/AdminRoute';
+import AdminLogin from './pages/Admin/AdminLogin';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import AdminProducts from './pages/Admin/AdminProducts';
+import AddProduct from './pages/Admin/AddProduct';
+import EditProduct from './pages/Admin/EditProduct';
 
 function App() {
   return (
@@ -29,6 +35,11 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+          <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>} />
+          <Route path="/admin/add-product" element={<AdminRoute><AddProduct /></AdminRoute>} />
+          <Route path="/admin/edit-product/:id" element={<AdminRoute><EditProduct /></AdminRoute>} />
         </Routes>
         <Footer />
       </div>

@@ -175,6 +175,11 @@ const Navbar = () => {
 
             {user ? (
               <div className="flex items-center gap-2 md:gap-4">
+                {(user.isAdmin || user.role === 'admin') && (
+                  <Link to="/admin/dashboard" className="text-xs font-bold text-[#111827]/70 hover:text-[#071A2F]">
+                    Admin
+                  </Link>
+                )}
                 <Link
                   to="/profile"
                   className="flex items-center gap-2 md:gap-3 p-1 pl-2 pr-3 md:pl-3 md:pr-4 bg-[#F8FAFC] hover:bg-white rounded-full border border-[#CBD5E1]/70 transition-all group shadow-sm"

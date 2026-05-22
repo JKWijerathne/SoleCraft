@@ -4,6 +4,8 @@ import {
   getProducts,
   getProductById,
   createProduct,
+  updateProduct,
+  deleteProduct,
 } from '../controllers/productController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -14,7 +16,11 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 router.get('/', getProducts);
-router.get('/:id', getProductById);
 router.post('/', protect, admin, upload.single('image'), createProduct);
+
+router.route('/:id')
+  .get(getProductById)
+  .put(protect, admin, upload.single('image'), updateProduct)
+  .delete(protect, admin, deleteProduct);
 
 export default router;

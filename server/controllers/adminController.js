@@ -2,18 +2,54 @@ import User from '../models/User.js';
 import Product from '../models/Product.js';
 import Order from '../models/Order.js';
 
-// ═══════════════════════════════════════════════════════════════
-//  DASHBOARD STATS
-// ═══════════════════════════════════════════════════════════════
+// Helper: get uploaded image path
+const getImagePath = (req) => {
+  if (!req.file) return null;
+
+  // If using multer diskStorage
+  return `/uploads/${req.file.filename}`;
+
+  // If you use Cloudinary later, change this to:
+  // return req.file.path;
+};
+
+// Helper: convert checkbox/string values to boolean
+const parseBoolean = (value) => {
+  if (value === true) return true;
+  if (value === false) return false;
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  if (value === 'on') return true;
+  return false;
+};
+
+// Helper: parse sizes from FormData
+const parseSizes = (sizes) => {
+  if (!sizes) return [];
+
+  if (Array.isArray(sizes)) {
+    return sizes;
+  }
+
+  try {
+    const parsed = JSON.parse(sizes);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return sizes
+      .split(',')
+      .map((size) => size.trim())
+      .filter(Boolean);
+  }
+};
 
 // @desc    Get admin dashboard summary stats
 // @route   GET /api/admin/stats
 // @access  Private/Admin
 export const getDashboardStats = async (req, res) => {
   try {
-    const totalUsers    = await User.countDocuments();
+    const totalUsers = await User.countDocuments();
     const totalProducts = await Product.countDocuments();
-    const totalOrders   = await Order.countDocuments();
+    const totalOrders = await Order.countDocuments();
 
     const revenueResult = await Order.aggregate([
       { $match: { isPaid: true } },
@@ -39,9 +75,6 @@ export const getDashboardStats = async (req, res) => {
   }
 };
 
-// ═══════════════════════════════════════════════════════════════
-//  USER MANAGEMENT
-// ═══════════════════════════════════════════════════════════════
 
 // @desc    Get all users
 // @route   GET /api/admin/users
@@ -61,30 +94,38 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// @desc    Update user (name, email, isAdmin)
+// @desc    Update user
 // @route   PUT /api/admin/users/:id
 // @access  Private/Admin
 export const updateUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
 
-    user.name    = req.body.name    ?? user.name;
-    user.email   = req.body.email   ?? user.email;
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.name = req.body.name ?? user.name;
+    user.email = req.body.email ?? user.email;
     user.isAdmin = req.body.isAdmin ?? user.isAdmin;
 
     const updatedUser = await user.save();
+
     res.json({
-      _id:     updatedUser._id,
-      name:    updatedUser.name,
-      email:   updatedUser.email,
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
     });
   } catch (error) {
@@ -98,25 +139,27 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
 
-    // Prevent admin from deleting themselves
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     if (user._id.toString() === req.user._id.toString()) {
-      return res.status(400).json({ message: 'Cannot delete your own account' });
+      return res.status(400).json({
+        message: 'Cannot delete your own account',
+      });
     }
 
     await user.deleteOne();
+
     res.json({ message: 'User removed successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// ═══════════════════════════════════════════════════════════════
-//  PRODUCT MANAGEMENT
-// ═══════════════════════════════════════════════════════════════
 
-// @desc    Get all products (admin view)
+// @desc    Get all products for admin
 // @route   GET /api/admin/products
 // @access  Private/Admin
 export const getAllProducts = async (req, res) => {
@@ -128,20 +171,60 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
-// @desc    Create a new product
+// @desc    Create product with uploaded image
 // @route   POST /api/admin/products
 // @access  Private/Admin
 export const createProduct = async (req, res) => {
   try {
-    const { name, description, price, image, category, countInStock } = req.body;
+    const {
+      name,
+      description,
+      price,
+      category,
+      gender,
+      type,
+      occasion,
+      sizes,
+      countInStock,
+      stock,
+      isSale,
+      sale,
+      discountPrice,
+    } = req.body;
+
+    const imagePath = getImagePath(req);
+
+    if (!name || !description || !price || !category) {
+      return res.status(400).json({
+        message: 'Name, description, price, and category are required',
+      });
+    }
+
+    if (!imagePath) {
+      return res.status(400).json({
+        message: 'Product image is required',
+      });
+    }
+
+    const saleStatus = parseBoolean(isSale ?? sale);
+    const stockValue = countInStock ?? stock ?? 0;
 
     const product = await Product.create({
       name,
       description,
-      price,
-      image,
+      price: Number(price),
+      image: imagePath,
       category,
-      countInStock,
+
+      gender,
+      type,
+      occasion,
+      sizes: parseSizes(sizes),
+      countInStock: Number(stockValue),
+      stock: Number(stockValue),
+      isSale: saleStatus,
+      sale: saleStatus,
+      discountPrice: discountPrice ? Number(discountPrice) : undefined,
     });
 
     res.status(201).json(product);
@@ -150,48 +233,97 @@ export const createProduct = async (req, res) => {
   }
 };
 
-// @desc    Update a product
+// @desc    Update product with optional new image
 // @route   PUT /api/admin/products/:id
 // @access  Private/Admin
 export const updateProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: 'Product not found' });
 
-    const { name, description, price, image, category, countInStock } = req.body;
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
 
-    product.name         = name         ?? product.name;
-    product.description  = description  ?? product.description;
-    product.price        = price        ?? product.price;
-    product.image        = image        ?? product.image;
-    product.category     = category     ?? product.category;
-    product.countInStock = countInStock ?? product.countInStock;
+    const {
+      name,
+      description,
+      price,
+      category,
+      gender,
+      type,
+      occasion,
+      sizes,
+      countInStock,
+      stock,
+      isSale,
+      sale,
+      discountPrice,
+    } = req.body;
+
+    const imagePath = getImagePath(req);
+
+    product.name = name ?? product.name;
+    product.description = description ?? product.description;
+    product.price = price !== undefined ? Number(price) : product.price;
+    product.category = category ?? product.category;
+
+    if (imagePath) {
+      product.image = imagePath;
+    }
+
+    // Optional fields. These work only if your Product model has them.
+    product.gender = gender ?? product.gender;
+    product.type = type ?? product.type;
+    product.occasion = occasion ?? product.occasion;
+
+    if (sizes !== undefined) {
+      product.sizes = parseSizes(sizes);
+    }
+
+    if (countInStock !== undefined || stock !== undefined) {
+      const stockValue = countInStock ?? stock;
+      product.countInStock = Number(stockValue);
+      product.stock = Number(stockValue);
+    }
+
+    if (isSale !== undefined || sale !== undefined) {
+      const saleStatus = parseBoolean(isSale ?? sale);
+      product.isSale = saleStatus;
+      product.sale = saleStatus;
+    }
+
+    if (discountPrice !== undefined) {
+      product.discountPrice =
+        discountPrice === '' ? undefined : Number(discountPrice);
+    }
 
     const updatedProduct = await product.save();
+
     res.json(updatedProduct);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// @desc    Delete a product
+// @desc    Delete product
 // @route   DELETE /api/admin/products/:id
 // @access  Private/Admin
 export const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: 'Product not found' });
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
 
     await product.deleteOne();
+
     res.json({ message: 'Product removed successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// ═══════════════════════════════════════════════════════════════
-//  ORDER MANAGEMENT
-// ═══════════════════════════════════════════════════════════════
 
 // @desc    Get all orders
 // @route   GET /api/admin/orders
@@ -201,6 +333,7 @@ export const getAllOrders = async (req, res) => {
     const orders = await Order.find()
       .sort({ createdAt: -1 })
       .populate('user', 'name email');
+
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -213,31 +346,41 @@ export const getAllOrders = async (req, res) => {
 export const markOrderAsDelivered = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
-    if (!order) return res.status(404).json({ message: 'Order not found' });
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
 
     if (!order.isPaid) {
-      return res.status(400).json({ message: 'Order must be paid before marking as delivered' });
+      return res.status(400).json({
+        message: 'Order must be paid before marking as delivered',
+      });
     }
 
     order.isDelivered = true;
     order.deliveredAt = Date.now();
 
     const updatedOrder = await order.save();
+
     res.json(updatedOrder);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// @desc    Delete an order
+// @desc    Delete order
 // @route   DELETE /api/admin/orders/:id
 // @access  Private/Admin
 export const deleteOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
-    if (!order) return res.status(404).json({ message: 'Order not found' });
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
 
     await order.deleteOne();
+
     res.json({ message: 'Order removed successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });

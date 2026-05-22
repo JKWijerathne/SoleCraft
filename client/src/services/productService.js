@@ -12,9 +12,30 @@ const getProductById = async (id) => {
   return response.data;
 };
 
+const addProduct = async (productData, token) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const response = await axios.post(API_URL, productData, config);
+  return response.data;
+};
+
+const updateProduct = async (id, productData, token) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const response = await axios.put(`${API_URL}/${id}`, productData, config);
+  return response.data;
+};
+
+const deleteProduct = async (id, token) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const response = await axios.delete(`${API_URL}/${id}`, config);
+  return response.data;
+};
+
 const productService = {
   getProducts,
   getProductById,
+  addProduct,
+  updateProduct,
+  deleteProduct,
 };
 
 export default productService;

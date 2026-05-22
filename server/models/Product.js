@@ -36,6 +36,30 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    type: {
+      type: String,
+      default: '',
+    },
+    occasion: {
+      type: String,
+      default: '',
+    },
+    style: {
+      type: String,
+      default: '',
+    },
+    sizes: {
+      type: [String],
+      default: [],
+    },
+    isSale: {
+      type: Boolean,
+      default: false,
+    },
+    discountPrice: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
