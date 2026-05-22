@@ -4,6 +4,11 @@ import Footer from './components/layout/Footer';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
+import Men from './pages/Men/Men';
+import Women from './pages/Women/Women';
+import Boys from './pages/Boys/Boys';
+import Girls from './pages/Girls/Girls';
+import ProductDetails from './pages/ProductDetails/ProductDetails';
 
 function App() {
   return (
@@ -12,6 +17,12 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/men" element={<Men />} />
+          <Route path="/woman" element={<Women />} />
+          <Route path="/women" element={<Women />} />
+          <Route path="/boys" element={<Boys />} />
+          <Route path="/girls" element={<Girls />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
