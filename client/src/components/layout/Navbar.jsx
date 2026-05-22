@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, ShoppingCart, LogOut, Search, Menu, X } from 'lucide-react';
+import { ShoppingBag, ShoppingCart, LogOut, Search, Menu, X, ChevronDown } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../../store/slices/authSlice';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,6 +9,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [expandedLink, setExpandedLink] = useState(null);
 
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
@@ -19,16 +20,67 @@ const Navbar = () => {
     navigate('/');
   };
 
+  const categoriesDropdown = [
+    {
+      title: 'By occasion',
+      items: [
+        { name: 'Casual', path: '?occasion=casual' },
+        { name: 'Formal', path: '?occasion=formal' },
+        { name: 'Office Wear', path: '?occasion=office-wear' },
+        { name: 'Party Wear', path: '?occasion=party-wear' },
+        { name: 'Sports', path: '?occasion=sports' },
+      ]
+    },
+    {
+      title: 'By type',
+      items: [
+        { name: 'Flip Flops', path: '?type=flip-flops' },
+        { name: 'Sandals', path: '?type=sandals' },
+        { name: 'Shoes', path: '?type=shoes' },
+        { name: 'Slippers', path: '?type=slippers' },
+        { name: 'Sneakers', path: '?type=sneakers' },
+        { name: 'Slides', path: '?type=slides' },
+        { name: 'Sports Shoes', path: '?type=sports-shoes' }
+      ]
+    },
+    {
+      title: 'By style',
+      items: [
+        { name: 'Classic', path: '?style=classic' },
+        { name: 'Trendy', path: '?style=trendy' },
+        { name: 'Minimal', path: '?style=minimal' },
+        { name: 'Luxury', path: '?style=luxury' },
+        { name: 'Streetwear', path: '?style=streetwear' },
+        { name: 'Comfort Fit', path: '?style=comfort-fit' }
+      ]
+    },
+
+    {
+      title: 'By price',
+      items: [
+        { name: 'Under Rs. 2,000', path: '?price=under-2000' },
+        { name: 'Rs. 2,000 - Rs. 5,000', path: '?price=2000-5000' },
+        { name: 'Rs. 5,000 - Rs. 10,000', path: '?price=5000-10000' },
+        { name: 'Premium', path: '?price=premium' }
+      ]
+    },
+  ];
+
+
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Men', path: '/men' },
-    { name: 'Woman', path: '/woman' },
-    { name: 'Girls', path: '/girls' },
-    { name: 'Boys', path: '/boys' },
+    { name: 'Men', path: '/men', hasDropdown: true },
+    { name: 'Woman', path: '/woman', hasDropdown: true },
+    { name: 'Girls', path: '/girls', hasDropdown: true },
+    { name: 'Boys', path: '/boys', hasDropdown: true },
     { name: 'Sale', path: '/sale' },
     { name: 'About us', path: '/about' },
     { name: 'Contact', path: '/contact' }
   ];
+
+  const toggleExpand = (name) => {
+    setExpandedLink(expandedLink === name ? null : name);
+  };
 
   return (
     <>
@@ -55,13 +107,41 @@ const Navbar = () => {
           {/* Desktop Links */}
           <div className="hidden lg:flex items-center lg:space-x-3 xl:space-x-5 text-[11px] xl:text-xs font-black uppercase tracking-widest text-[#111827]/60">
             {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className="hover:text-[#071A2F] transition-colors py-1"
-              >
-                {link.name}
-              </Link>
+              <div key={link.name} className="relative group py-4">
+                <Link
+                  to={link.path}
+                  className="hover:text-[#071A2F] transition-colors py-1 flex items-center gap-1"
+                >
+                  {link.name}
+                  {link.hasDropdown && (
+                    <ChevronDown className="w-3 h-3 opacity-60 group-hover:rotate-180 transition-transform duration-300" />
+                  )}
+                </Link>
+
+                {link.hasDropdown && (
+                  <div className="absolute top-[85%] left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
+                    <div className="bg-white/95 backdrop-blur-xl border border-[#CBD5E1]/70 shadow-2xl rounded-2xl p-6 flex gap-8 w-max min-w-[700px]">
+                      {categoriesDropdown.map((col) => (
+                        <div key={col.title} className="flex-1">
+                          <h3 className="text-[#071A2F] font-black text-[10px] xl:text-xs mb-3 border-b border-[#CBD5E1]/40 pb-2">{col.title}</h3>
+                          <ul className="space-y-2 flex flex-col">
+                            {col.items.map((item) => (
+                              <Link
+                                key={item.name}
+                                to={`${link.path}${item.path}`}
+                                className="text-[#111827]/60 hover:text-[#071A2F] transition-all duration-200 text-[11px] xl:text-xs font-black capitalize whitespace-nowrap tracking-wide flex items-center group/item"
+                              >
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#F5B942] opacity-0 w-0 transition-all duration-300 group-hover/item:opacity-100 group-hover/item:w-1.5 group-hover/item:mr-2"></span>
+                                <span className="transition-transform duration-300">{item.name}</span>
+                              </Link>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
 
@@ -168,16 +248,62 @@ const Navbar = () => {
                 </button>
               </div>
 
-              <div className="flex flex-col space-y-4 text-sm font-black uppercase tracking-widest text-[#111827]/60">
+              <div className="flex flex-col space-y-1 text-sm font-black uppercase tracking-widest text-[#111827]/60 overflow-y-auto pb-8">
                 {navLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    to={link.path}
-                    onClick={() => setIsOpen(false)}
-                    className="hover:text-[#071A2F] transition-colors py-2 border-b border-[#CBD5E1]/60"
-                  >
-                    {link.name}
-                  </Link>
+                  <div key={link.name} className="flex flex-col border-b border-[#CBD5E1]/60">
+                    <div className="flex items-center justify-between py-3">
+                      <Link
+                        to={link.path}
+                        onClick={() => setIsOpen(false)}
+                        className="hover:text-[#071A2F] transition-colors flex-1"
+                      >
+                        {link.name}
+                      </Link>
+                      {link.hasDropdown && (
+                        <button
+                          onClick={() => toggleExpand(link.name)}
+                          className="p-2 -mr-2 hover:bg-[#CBD5E1]/20 rounded-md transition-colors"
+                        >
+                          <motion.div
+                            animate={{ rotate: expandedLink === link.name ? 180 : 0 }}
+                          >
+                            <ChevronDown className="w-4 h-4" />
+                          </motion.div>
+                        </button>
+                      )}
+                    </div>
+                    <AnimatePresence>
+                      {link.hasDropdown && expandedLink === link.name && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="pl-4 pb-4 flex flex-col space-y-5 normal-case text-xs tracking-normal">
+                            {categoriesDropdown.map((col) => (
+                              <div key={col.title}>
+                                <h4 className="text-[#071A2F] font-bold mb-2 uppercase tracking-wide text-[10px]">{col.title}</h4>
+                                <div className="flex flex-col space-y-2.5 pl-2">
+                                  {col.items.map((item) => (
+                                    <Link
+                                      key={item.name}
+                                      to={`${link.path}${item.path}`}
+                                      onClick={() => setIsOpen(false)}
+                                      className="text-[#111827]/70 hover:text-[#071A2F] font-medium capitalize flex items-center gap-2"
+                                    >
+                                      <span className="w-1 h-1 rounded-full bg-[#F5B942]"></span>
+                                      {item.name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 ))}
               </div>
             </motion.div>
