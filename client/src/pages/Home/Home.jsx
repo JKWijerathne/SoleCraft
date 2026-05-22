@@ -1,19 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, reset } from '../../store/slices/productSlice';
 import ProductCard from '../../components/products/ProductCard.jsx';
-import { Loader2, AlertCircle, ArrowRight, Zap, ShieldCheck, Truck } from 'lucide-react';
-import { motion } from 'framer-motion';
+import {
+  Loader2,
+  AlertCircle,
+  ArrowRight,
+  Zap,
+  ShieldCheck,
+  Truck
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+import LandingPg1 from '../../assets/images/LandingPg1.png';
+import LandingPg2 from '../../assets/images/LandingPg2.png';
+import LandingPg3 from '../../assets/images/LandingPg3.png';
+import LandingPg4 from '../../assets/images/LandingPg4.png';
+
+const sliderImages = [LandingPg1, LandingPg2, LandingPg3, LandingPg4];
 
 const Home = () => {
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector((state) => state.products);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
     dispatch(fetchProducts());
 
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % sliderImages.length);
+    }, 4500);
+
     return () => {
       dispatch(reset());
+      clearInterval(timer);
     };
   }, [dispatch]);
 
@@ -35,62 +55,85 @@ const Home = () => {
   return (
     <div className="overflow-hidden bg-[#F8FAFC] text-[#111827] selection:bg-[#F5B942]/35 selection:text-[#071A2F]">
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center px-6 pt-20 bg-[#F8FAFC]">
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-          <div className="absolute top-[10%] right-[10%] w-[40vw] h-[40vw] bg-[#F5B942]/20 blur-[120px] rounded-full animate-pulse" />
-          <div className="absolute bottom-[10%] left-[10%] w-[30vw] h-[30vw] bg-[#071A2F]/10 blur-[100px] rounded-full" />
-        </div>
+      <section className="relative min-h-[calc(100vh-130px)] flex items-start px-3 md:px-5 pt-4 pb-6 bg-[#F8FAFC]">
+        <motion.div
+          initial={{ y: 25, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="relative z-10 w-full max-w-[1550px] mx-auto h-[560px] overflow-hidden rounded-[3rem] border border-[#CBD5E1]/70 shadow-[0_35px_80px_rgba(7,26,47,0.18)]"
+        >
+          {/* Full Container Image Slider */}
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={currentSlide}
+              src={sliderImages[currentSlide]}
+              alt={`SoleCraft slide ${currentSlide + 1}`}
+              initial={{ opacity: 0, scale: 1.06 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.03 }}
+              transition={{ duration: 1, ease: 'easeInOut' }}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </AnimatePresence>
 
-        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-          <motion.div
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-          >
-            <span className="inline-block px-4 py-1.5 rounded-full bg-white border border-[#CBD5E1]/70 text-[#D99A20] text-xs font-bold uppercase tracking-widest mb-6 shadow-sm">
-              Exclusive Drop 2024
-            </span>
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#071A2F]/90 via-[#071A2F]/55 to-[#071A2F]/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
 
-            <h1 className="text-6xl md:text-8xl font-black italic tracking-tighter leading-none uppercase mb-6 text-[#071A2F]">
-              Step Into The <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#071A2F] via-[#D99A20] to-[#F5B942]">
-                Future.
+          {/* Text on Left Side */}
+          <div className="relative z-10 h-full flex items-center">
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              className="w-full max-w-xl pl-10 pr-6 md:pl-16 md:pr-10 lg:pl-20 lg:pr-12"
+            >
+              <span className="inline-block px-3 py-1 rounded-full bg-white/95 border border-white/60 text-[#D99A20] text-[13px] font-bold uppercase tracking-widest mb-4 shadow-sm">
+                Exclusive Drop 2026
               </span>
-            </h1>
 
-            <p className="text-xl text-[#111827]/65 max-w-lg mb-10 leading-relaxed">
-              Experience the evolution of footwear. SoleCraft brings you limited-edition designs that combine high-performance tech with street-ready style.
-            </p>
+              <h1 className="inline-block text-4xl md:text-6xl xl:text-7xl font-black italic tracking-tighter leading-none uppercase mb-4 text-white">
+                <span className="block">Step Into</span>
+                <span className="block">The</span>
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#F5B942] to-[#D99A20]">
+                  Future.
+                </span>
+              </h1>
 
-            <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-4 bg-[#F5B942] text-[#071A2F] font-black uppercase tracking-widest rounded-2xl hover:bg-[#D99A20] transition-all flex items-center gap-2 group shadow-xl shadow-[#F5B942]/25 active:scale-95">
-                Explore Collection
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+              <p className="text-base md:text-lg text-white/80 max-w-md mb-6 leading-relaxed">
+                Experience the evolution of footwear. SoleCraft brings you
+                limited-edition designs that combine high-performance tech with
+                street-ready style.
+              </p>
 
-              <button className="px-8 py-4 bg-white border border-[#CBD5E1]/70 text-[#071A2F] font-black uppercase tracking-widest rounded-2xl hover:bg-[#071A2F] hover:text-white transition-all shadow-sm active:scale-95">
-                Learn More
-              </button>
-            </div>
-          </motion.div>
+              <div className="flex flex-wrap gap-4">
+                <button className="px-7 py-3.5 bg-[#F5B942] text-[#071A2F] text-xs font-black uppercase tracking-widest rounded-xl hover:bg-[#D99A20] transition-all flex items-center gap-2 group shadow-xl shadow-[#F5B942]/25 active:scale-95">
+                  Explore Collection
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
 
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0, rotate: 10 }}
-            animate={{ scale: 1, opacity: 1, rotate: -5 }}
-            transition={{ duration: 1, ease: 'easeOut' }}
-            className="relative"
-          >
-            <div className="relative z-10 drop-shadow-[0_35px_35px_rgba(7,26,47,0.20)]">
-              <img
-                src="/hero-sneaker.png"
-                alt="Featured Sneaker"
-                className="w-full h-auto object-contain transform hover:scale-105 transition-transform duration-700"
+                <button className="px-7 py-3.5 bg-white/95 border border-white/60 text-[#071A2F] text-xs font-black uppercase tracking-widest rounded-xl hover:bg-[#071A2F] hover:text-white transition-all shadow-sm active:scale-95">
+                  Learn More
+                </button>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Slide Indicators */}
+          <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-20 flex justify-center gap-3">
+            {sliderImages.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                className={`h-2.5 rounded-full transition-all duration-300 ${currentSlide === idx
+                  ? 'w-10 bg-[#F5B942]'
+                  : 'w-3 bg-white/55 hover:bg-white/80'
+                  }`}
+                aria-label={`Go to slide ${idx + 1}`}
               />
-            </div>
-
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-tr from-[#F5B942]/25 to-[#071A2F]/10 rounded-full blur-[100px] z-0 animate-pulse" />
-          </motion.div>
-        </div>
+            ))}
+          </div>
+        </motion.div>
       </section>
 
       {/* Features Section */}
@@ -148,7 +191,8 @@ const Home = () => {
             </div>
 
             <p className="text-[#111827]/60 max-w-md font-medium">
-              Don't miss out on our most anticipated releases. Limited stock available.
+              Don't miss out on our most anticipated releases. Limited stock
+              available.
             </p>
           </div>
 
@@ -163,7 +207,9 @@ const Home = () => {
             <div className="p-8 rounded-[2.5rem] bg-red-50 border border-red-200 text-red-600 max-w-2xl mx-auto flex items-center gap-6">
               <AlertCircle size={32} />
               <div>
-                <h3 className="font-black uppercase italic text-lg mb-1">Stock Error</h3>
+                <h3 className="font-black uppercase italic text-lg mb-1">
+                  Stock Error
+                </h3>
                 <p className="text-sm font-medium">{error}</p>
               </div>
             </div>
@@ -185,7 +231,11 @@ const Home = () => {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 [perspective:1000px]"
             >
               {products.slice(0, 8).map((product) => (
-                <motion.div key={product._id} variants={itemVariants} className="h-full">
+                <motion.div
+                  key={product._id}
+                  variants={itemVariants}
+                  className="h-full"
+                >
                   <ProductCard product={product} />
                 </motion.div>
               ))}
@@ -209,7 +259,8 @@ const Home = () => {
             </h2>
 
             <p className="text-[#CBD5E1] text-lg font-medium mb-10 opacity-90">
-              Be the first to know about secret releases, restocks, and exclusive member discounts.
+              Be the first to know about secret releases, restocks, and
+              exclusive member discounts.
             </p>
 
             <form className="flex flex-col sm:flex-row gap-4">
@@ -225,7 +276,6 @@ const Home = () => {
             </form>
           </div>
 
-          {/* Abstract Background Design */}
           <div className="absolute top-0 right-0 w-1/2 h-full pointer-events-none opacity-15">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] rotate-45">
               <div className="w-full h-full border-[40px] border-[#F5B942] rounded-full" />
