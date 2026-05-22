@@ -2,7 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { register, reset } from '../../store/slices/authSlice';
-import { Mail, Lock, User, UserPlus, Loader2, AlertCircle, ShoppingBag } from 'lucide-react';
+import {
+  Mail,
+  Lock,
+  User,
+  UserPlus,
+  Loader2,
+  AlertCircle,
+  ShoppingBag,
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Register = () => {
@@ -55,7 +63,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] relative overflow-hidden flex items-center justify-center p-4">
-      {/* Background glow effects from Register.css */}
+      {/* Background glow effects */}
       <div className="absolute -top-[10%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(245,185,66,0.18)_0%,transparent_70%)] z-0" />
       <div className="absolute -bottom-[10%] -left-[10%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(7,26,47,0.10)_0%,transparent_70%)] z-0" />
 
@@ -69,14 +77,19 @@ const Register = () => {
           <ShoppingBag className="w-32 h-32 rotate-12" />
         </div>
 
-        <div className="text-center mb-10 relative z-10">
+        <div className="text-center mb-8 relative z-10">
           <motion.div
-            initial={{ y: -20 }}
-            animate={{ y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#F5B942]/15 border border-[#F5B942]/40 text-[#D99A20] text-xs font-bold uppercase tracking-widest mb-6"
+            initial={{ scale: 0.85, y: -10 }}
+            animate={{ scale: 1, y: 0 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 12 }}
+            className="mx-auto flex items-center justify-center mb-4"
           >
-            <span className="w-2 h-2 rounded-full bg-[#F5B942] animate-pulse" />
-            Join the movement
+            <motion.img
+              src="/Logo.png"
+              alt="SoleCraft Logo"
+              whileHover={{ rotate: -10, scale: 1.1 }}
+              className="w-20 h-20 object-contain"
+            />
           </motion.div>
 
           <h1 className="text-4xl font-black italic tracking-tighter text-[#071A2F] mb-2 uppercase">
@@ -104,9 +117,15 @@ const Register = () => {
           )}
         </AnimatePresence>
 
-        <form onSubmit={onSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+        <form
+          onSubmit={onSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10"
+        >
           <div className="space-y-2 md:col-span-2">
-            <label className="text-xs font-bold text-[#111827]/60 uppercase tracking-wider ml-1" htmlFor="name">
+            <label
+              className="text-xs font-bold text-[#111827]/60 uppercase tracking-wider ml-1"
+              htmlFor="name"
+            >
               Full Name
             </label>
 
@@ -126,7 +145,10 @@ const Register = () => {
           </div>
 
           <div className="space-y-2 md:col-span-2">
-            <label className="text-xs font-bold text-[#111827]/60 uppercase tracking-wider ml-1" htmlFor="email">
+            <label
+              className="text-xs font-bold text-[#111827]/60 uppercase tracking-wider ml-1"
+              htmlFor="email"
+            >
               Email Address
             </label>
 
@@ -146,7 +168,10 @@ const Register = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-bold text-[#111827]/60 uppercase tracking-wider ml-1" htmlFor="password">
+            <label
+              className="text-xs font-bold text-[#111827]/60 uppercase tracking-wider ml-1"
+              htmlFor="password"
+            >
               Password
             </label>
 
@@ -166,7 +191,10 @@ const Register = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-xs font-bold text-[#111827]/60 uppercase tracking-wider ml-1" htmlFor="confirmPassword">
+            <label
+              className="text-xs font-bold text-[#111827]/60 uppercase tracking-wider ml-1"
+              htmlFor="confirmPassword"
+            >
               Confirm
             </label>
 
@@ -204,7 +232,7 @@ const Register = () => {
           </button>
         </form>
 
-        <div className="mt-10 text-center text-[#111827]/60 text-sm font-medium">
+        <div className="mt-8 text-center text-[#111827]/60 text-sm font-medium">
           Already a member?{' '}
           <Link
             to="/login"

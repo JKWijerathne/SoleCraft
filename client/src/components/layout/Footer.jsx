@@ -99,8 +99,8 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <Link to="/" className="mb-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F5B942]">
-                <ShoppingBag className="h-5 w-5 text-[#020617]" />
+              <div className="h-10 w-10 rounded-xl overflow-hidden flex-shrink-0">
+                <img src="/Logo.png" alt="SoleCraft Logo" className="w-full h-full object-cover" />
               </div>
 
               <span className="text-2xl font-black italic uppercase tracking-tight">

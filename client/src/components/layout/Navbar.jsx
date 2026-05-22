@@ -40,12 +40,12 @@ const Navbar = () => {
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group shrink-0">
-            <motion.div
+            <motion.img
+              src="/Logo.png"
+              alt="SoleCraft Logo"
               whileHover={{ rotate: -10, scale: 1.1 }}
-              className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-[#071A2F] flex items-center justify-center shadow-lg shadow-[#071A2F]/20"
-            >
-              <ShoppingBag className="w-5 h-5 md:w-6 md:h-6 text-[#F5B942]" />
-            </motion.div>
+              className="w-9 h-9 md:w-10 md:h-10 object-contain drop-shadow-md"
+            />
 
             <span className="text-xl md:text-2xl font-black italic tracking-tighter text-[#071A2F] uppercase group-hover:tracking-normal transition-all duration-300">
               Sole<span className="text-[#F5B942]">Craft</span>

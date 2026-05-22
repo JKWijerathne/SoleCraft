@@ -68,12 +68,17 @@ const Login = () => {
       >
         <div className="text-center mb-8">
           <motion.div
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 10 }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#071A2F] mb-6 shadow-lg shadow-[#071A2F]/20"
+            initial={{ scale: 0.85, y: -10 }}
+            animate={{ scale: 1, y: 0 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 12 }}
+            className="mx-auto flex items-center justify-center mb-4"
           >
-            <ShoppingBag className="w-8 h-8 text-[#F5B942]" />
+            <motion.img
+              src="/Logo.png"
+              alt="SoleCraft Logo"
+              whileHover={{ rotate: -10, scale: 1.1 }}
+              className="w-20 h-20 object-contain"
+            />
           </motion.div>
 
           <h1 className="text-4xl font-black italic tracking-tighter text-[#071A2F] mb-2 uppercase">
