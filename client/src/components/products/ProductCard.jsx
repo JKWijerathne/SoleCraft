@@ -23,9 +23,9 @@ const ProductCard = ({ product, onAddToCart }) => {
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
 
-        {product.isOnSale && (
+        {product.isSale && (
           <span className="absolute top-4 left-4 bg-[#F5B942] text-[#071A2F] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide shadow-md">
-            Sale
+            Sale: -Rs. {product.discountPrice?.toLocaleString()}
           </span>
         )}
       </Link>
@@ -43,15 +43,20 @@ const ProductCard = ({ product, onAddToCart }) => {
 
         <div className="mt-auto">
           <div className="flex items-center gap-3 mb-4">
-            {product.oldPrice && (
-              <span className="text-[#111827]/35 line-through">
-                Rs. {product.oldPrice.toLocaleString()}
+            {product.isSale && product.discountPrice > 0 ? (
+              <>
+                <span className="text-lg font-bold text-[#071A2F]">
+                  Rs. {(product.price - product.discountPrice).toLocaleString()}
+                </span>
+                <span className="text-[#111827]/35 line-through text-sm">
+                  Rs. {product.price.toLocaleString()}
+                </span>
+              </>
+            ) : (
+              <span className="text-lg font-bold text-[#071A2F]">
+                Rs. {product.price.toLocaleString()}
               </span>
             )}
-
-            <span className="text-lg font-bold text-[#071A2F]">
-              Rs. {product.price.toLocaleString()}
-            </span>
           </div>
 
           <button

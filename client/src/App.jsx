@@ -8,6 +8,7 @@ import Men from './pages/Men/Men';
 import Women from './pages/Women/Women';
 import Boys from './pages/Boys/Boys';
 import Girls from './pages/Girls/Girls';
+import Sale from './pages/Sale/Sale';
 import ProductDetails from './pages/ProductDetails/ProductDetails';
 import Cart from './pages/Cart/Cart';
 import Checkout from './pages/Checkout/Checkout';
@@ -37,6 +38,7 @@ function App() {
           <Route path="/women" element={<Women />} />
           <Route path="/boys" element={<Boys />} />
           <Route path="/girls" element={<Girls />} />
+          <Route path="/sale" element={<Sale />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
