@@ -1,9 +1,11 @@
 import React from 'react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CartSummary = ({ cartItems }) => {
+  const navigate = useNavigate();
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
-  const shippingPrice = subtotal > 10000 ? 0 : 500;
+  const shippingPrice = 0;
   const total = subtotal + shippingPrice;
 
   return (
@@ -34,12 +36,15 @@ const CartSummary = ({ cartItems }) => {
         </div>
         {shippingPrice === 0 && (
           <p className="text-[#D99A20] text-xs font-bold uppercase tracking-widest mt-2 text-right">
-            You unlocked free shipping!
+            Free shipping applied!
           </p>
         )}
       </div>
 
-      <button className="w-full py-5 bg-[#F5B942] text-[#071A2F] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-[#D99A20] transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#F5B942]/25 active:scale-[0.98]">
+      <button 
+        onClick={() => navigate('/checkout')}
+        className="w-full py-5 bg-[#F5B942] text-[#071A2F] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-[#D99A20] transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#F5B942]/25 active:scale-[0.98]"
+      >
         Checkout
         <ArrowRight className="w-5 h-5" />
       </button>

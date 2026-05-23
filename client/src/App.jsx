@@ -21,6 +21,7 @@ import OrderSuccess from './pages/Orders/OrderSuccess';
 import Profile from './pages/Profile/Profile';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
+import Payment from './pages/Payment/Payment';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/payment/:id" element={<Payment />} />
           <Route path="/order-success" element={<OrderSuccess />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
