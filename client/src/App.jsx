@@ -19,6 +19,8 @@ import AddProduct from './pages/Admin/AddProduct';
 import EditProduct from './pages/Admin/EditProduct';
 import OrderSuccess from './pages/Orders/OrderSuccess';
 import Profile from './pages/Profile/Profile';
+import About from './pages/About/About';
+import Contact from './pages/Contact/Contact';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/men" element={<Men />} />
           <Route path="/woman" element={<Women />} />
           <Route path="/women" element={<Women />} />
