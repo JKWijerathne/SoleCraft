@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home/Home';
@@ -23,6 +23,7 @@ import Profile from './pages/Profile/Profile';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
 import Payment from './pages/Payment/Payment';
+import SearchResults from './pages/Search/SearchResults';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/boys" element={<Boys />} />
           <Route path="/girls" element={<Girls />} />
           <Route path="/sale" element={<Sale />} />
+          <Route path="/search" element={<SearchResults />} />
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, ShoppingCart, LogOut, Search, Menu, X, ChevronDown } from 'lucide-react';
+import { ShoppingCart, LogOut, Search, Menu, X, ChevronDown } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../../store/slices/authSlice';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,6 +10,8 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [expandedLink, setExpandedLink] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
@@ -82,6 +84,18 @@ const Navbar = () => {
     setExpandedLink(expandedLink === name ? null : name);
   };
 
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+
+    const query = searchTerm.trim();
+    if (!query) return;
+
+    navigate(`/search?q=${encodeURIComponent(query)}`);
+    setSearchTerm('');
+    setIsSearchOpen(false);
+    setIsOpen(false);
+  };
+
   return (
     <>
       <nav className="sticky top-0 z-[100] px-4 md:px-6 py-3 md:py-4 transition-all duration-300 bg-transparent relative">
@@ -147,7 +161,27 @@ const Navbar = () => {
 
           {/* Actions */}
           <div className="flex items-center space-x-2 md:space-x-3">
-            <button className="p-2 md:p-2.5 text-[#111827]/60 hover:text-[#071A2F] hover:bg-[#F8FAFC] rounded-full transition-all">
+            <form
+              onSubmit={handleSearchSubmit}
+              className="hidden md:flex items-center gap-2 px-3 py-2 bg-[#F8FAFC] border border-[#CBD5E1]/70 rounded-full focus-within:border-[#F5B942]/70 transition-all"
+            >
+              <Search className="w-4 h-4 text-[#111827]/50" />
+              <input
+                type="search"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="Search products"
+                className="w-32 lg:w-44 bg-transparent text-sm font-semibold text-[#111827] placeholder:text-[#111827]/35 focus:outline-none"
+                aria-label="Search products"
+              />
+            </form>
+
+            <button
+              type="button"
+              onClick={() => setIsSearchOpen((open) => !open)}
+              className="md:hidden p-2 md:p-2.5 text-[#111827]/60 hover:text-[#071A2F] hover:bg-[#F8FAFC] rounded-full transition-all"
+              aria-label="Open search"
+            >
               <Search className="w-4 h-4 md:w-5 md:h-5" />
             </button>
 
@@ -219,6 +253,37 @@ const Navbar = () => {
             </button>
           </div>
         </div>
+
+        <AnimatePresence>
+          {isSearchOpen && (
+            <motion.form
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              onSubmit={handleSearchSubmit}
+              className="md:hidden max-w-7xl mx-auto mt-3 flex items-center gap-2 bg-white/95 border border-[#CBD5E1]/70 rounded-2xl px-4 py-3 shadow-xl shadow-[#071A2F]/10"
+            >
+              <Search className="w-4 h-4 text-[#111827]/50" />
+              <input
+                type="search"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="Search products"
+                autoFocus
+                className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-[#111827] placeholder:text-[#111827]/35 focus:outline-none"
+                aria-label="Search products"
+              />
+              <button
+                type="button"
+                onClick={() => setIsSearchOpen(false)}
+                className="p-1.5 text-[#111827]/50 hover:text-[#071A2F] rounded-full"
+                aria-label="Close search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </motion.form>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Mobile Drawer */}
