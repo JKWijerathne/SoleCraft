@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, LogOut, Search, Menu, X, ChevronDown } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { ShoppingCart, LogOut, Search, Menu, X, ChevronDown, User } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../../store/slices/authSlice';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [expandedLink, setExpandedLink] = useState(null);
@@ -102,7 +103,7 @@ const Navbar = () => {
         {/* Light blur layer from Navbar.css */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#F8FAFC]/90 to-transparent backdrop-blur-[8px] opacity-0 pointer-events-none -z-10" />
 
-        <div className="max-w-7xl mx-auto flex justify-between items-center bg-white/90 backdrop-blur-xl border border-[#CBD5E1]/70 hover:border-[#F5B942]/45 rounded-[1.5rem] md:rounded-[2rem] px-4 lg:px-6 py-2 md:py-3 shadow-[0_18px_45px_-24px_rgba(7,26,47,0.35)] transition-all duration-300">
+        <div className="max-w-[96rem] mx-auto flex justify-between items-center gap-3 bg-white/90 backdrop-blur-xl border border-[#CBD5E1]/70 hover:border-[#F5B942]/45 rounded-[1.5rem] md:rounded-[2rem] px-4 lg:px-5 xl:px-6 py-2 md:py-3 shadow-[0_18px_45px_-24px_rgba(7,26,47,0.35)] transition-all duration-300">
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group shrink-0">
@@ -113,18 +114,22 @@ const Navbar = () => {
               className="w-9 h-9 md:w-10 md:h-10 object-contain drop-shadow-md"
             />
 
-            <span className="text-xl md:text-2xl font-black italic tracking-tighter text-[#071A2F] uppercase group-hover:tracking-normal transition-all duration-300">
+            <span className="text-xl xl:text-2xl font-black italic tracking-tighter text-[#071A2F] uppercase group-hover:tracking-normal transition-all duration-300">
               Sole<span className="text-[#F5B942]">Craft</span>
             </span>
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden lg:flex items-center lg:space-x-3 xl:space-x-5 text-[11px] xl:text-xs font-black uppercase tracking-widest text-[#111827]/60">
+          <div className="hidden lg:flex flex-1 min-w-0 items-center justify-center gap-2 xl:gap-4 text-[10px] xl:text-[11px] 2xl:text-xs font-black uppercase tracking-widest text-[#111827]/60">
             {navLinks.map((link) => (
-              <div key={link.name} className="relative group py-4">
+              <div key={link.name} className="relative group py-4 shrink-0">
                 <Link
                   to={link.path}
-                  className="hover:text-[#071A2F] transition-colors py-1 flex items-center gap-1"
+                  className={`transition-colors py-1 flex items-center gap-1 whitespace-nowrap ${
+                    location.pathname === link.path
+                      ? 'text-[#071A2F] border-b-2 border-[#F5B942]'
+                      : 'hover:text-[#071A2F]'
+                  }`}
                 >
                   {link.name}
                   {link.hasDropdown && (
@@ -160,7 +165,7 @@ const Navbar = () => {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center space-x-2 md:space-x-3">
+          <div className="flex shrink-0 items-center gap-2 md:gap-3">
             <form
               onSubmit={handleSearchSubmit}
               className="hidden md:flex items-center gap-2 px-3 py-2 bg-[#F8FAFC] border border-[#CBD5E1]/70 rounded-full focus-within:border-[#F5B942]/70 transition-all"
@@ -171,7 +176,7 @@ const Navbar = () => {
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder="Search products"
-                className="w-32 lg:w-44 bg-transparent text-sm font-semibold text-[#111827] placeholder:text-[#111827]/35 focus:outline-none"
+                className="w-28 xl:w-40 2xl:w-48 bg-transparent text-sm font-semibold text-[#111827] placeholder:text-[#111827]/35 focus:outline-none"
                 aria-label="Search products"
               />
             </form>
@@ -187,7 +192,11 @@ const Navbar = () => {
 
             <Link
               to="/cart"
-              className="relative p-2 md:p-2.5 text-[#111827]/60 hover:text-[#071A2F] hover:bg-[#F8FAFC] rounded-full transition-all"
+              className={`relative p-2 md:p-2.5 rounded-full transition-all ${
+                location.pathname === '/cart'
+                  ? 'text-[#071A2F] bg-[#F8FAFC]'
+                  : 'text-[#111827]/60 hover:text-[#071A2F] hover:bg-[#F8FAFC]'
+              }`}
             >
               <ShoppingCart className="w-4 h-4 md:w-5 md:h-5" />
 
@@ -205,26 +214,26 @@ const Navbar = () => {
               </AnimatePresence>
             </Link>
 
-            <div className="h-6 w-px bg-[#CBD5E1]/70 mx-1 md:mx-2" />
+            <div className="h-6 w-px bg-[#CBD5E1]/70 mx-0 md:mx-1" />
 
             {user ? (
-              <div className="flex items-center gap-2 md:gap-4">
+              <div className="flex items-center gap-2">
                 {(user.isAdmin || user.role === 'admin') && (
-                  <Link to="/admin/dashboard" className="text-xs font-bold text-[#111827]/70 hover:text-[#071A2F]">
+                  <Link to="/admin/dashboard" className="text-xs font-bold text-[#111827]/70 hover:text-[#071A2F] whitespace-nowrap">
                     Admin
                   </Link>
                 )}
                 <Link
                   to="/profile"
-                  className="flex items-center gap-2 md:gap-3 p-1 pl-2 pr-3 md:pl-3 md:pr-4 bg-[#F8FAFC] hover:bg-white rounded-full border border-[#CBD5E1]/70 transition-all group shadow-sm"
+                  className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#CBD5E1]/70 transition-all group shadow-sm ${
+                    location.pathname === '/profile'
+                      ? 'bg-white text-[#071A2F] border-[#F5B942]'
+                      : 'bg-[#F8FAFC] hover:bg-white text-[#111827]/60 hover:text-[#071A2F]'
+                  }`}
+                  aria-label="Profile"
+                  title="Profile"
                 >
-                  <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-[#071A2F] flex items-center justify-center text-xs font-bold text-[#F5B942] border border-[#071A2F]/10">
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
-
-                  <span className="text-xs md:text-sm font-bold text-[#111827]/70 group-hover:text-[#071A2F] hidden sm:block">
-                    {user.name.split(' ')[0]}
-                  </span>
+                  <User className="w-4 h-4 md:w-5 md:h-5" />
                 </Link>
 
                 <button
@@ -325,7 +334,11 @@ const Navbar = () => {
                       <Link
                         to={link.path}
                         onClick={() => setIsOpen(false)}
-                        className="hover:text-[#071A2F] transition-colors flex-1"
+                        className={`transition-colors flex-1 ${
+                          location.pathname === link.path
+                            ? 'text-[#071A2F] font-bold'
+                            : 'hover:text-[#071A2F]'
+                        }`}
                       >
                         {link.name}
                       </Link>
