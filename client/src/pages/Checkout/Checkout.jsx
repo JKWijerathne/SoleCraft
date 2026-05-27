@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { createOrder, resetOrder } from '../../store/slices/orderSlice';
+import { logout } from '../../store/slices/authSlice';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -10,6 +11,7 @@ const Checkout = () => {
 
   const { cartItems = [] } = useSelector((state) => state.cart);
   const { order, loading, error, success } = useSelector((state) => state.order);
+  const { user, token } = useSelector((state) => state.auth);
 
   const [shippingDetails, setShippingDetails] = useState({
     fullName: '',
@@ -31,19 +33,31 @@ const Checkout = () => {
   }, 0);
 
   useEffect(() => {
+    if (!user || !token) {
+      navigate('/login');
+      return;
+    }
+
     if (cartItems.length === 0) {
       navigate('/cart');
+      return;
     }
 
     if (success && order?._id) {
       navigate(`/payment/${order._id}`);
       dispatch(resetOrder());
+      return;
     }
 
     if (error) {
       alert(error);
+      if (error.toLowerCase().includes('not authorized') || error.toLowerCase().includes('sign in')) {
+        dispatch(logout());
+        dispatch(resetOrder());
+        navigate('/login');
+      }
     }
-  }, [success, order, error, cartItems.length, navigate, dispatch]);
+  }, [success, order, error, cartItems.length, navigate, dispatch, user, token]);
 
   const handleChange = (e) => {
     setShippingDetails({
@@ -237,7 +251,7 @@ const Checkout = () => {
                 </div>
 
                 <p className="text-sm text-gray-500 mt-3">
-                  Card payments are securely handled through PayPal.
+                  PayPal is for PayPal account payments. Debit and credit card payments are securely handled through PayHere.
                 </p>
               </div>
 
