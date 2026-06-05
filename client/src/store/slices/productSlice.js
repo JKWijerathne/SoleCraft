@@ -75,7 +75,10 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload;
+        state.products = Array.isArray(action.payload) ? action.payload : [];
+        if (!Array.isArray(action.payload)) {
+          state.error = 'Invalid data format received from server.';
+        }
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
