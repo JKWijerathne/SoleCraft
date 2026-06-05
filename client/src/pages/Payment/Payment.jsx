@@ -13,6 +13,7 @@ const Payment = () => {
   const navigate = useNavigate();
 
   const [clientId, setClientId] = useState('');
+  const [payHereReady, setPayHereReady] = useState(false);
 
   const { order, loading, error, success } = useSelector((state) => state.order);
   const { user, token } = useSelector((state) => state.auth);
@@ -27,6 +28,30 @@ const Payment = () => {
       }
     };
     fetchClientId();
+  }, []);
+
+  // Dynamically load the PayHere SDK only when this page is visited
+  useEffect(() => {
+    if (window.payhere) {
+      setPayHereReady(true);
+      return;
+    }
+    const PAYHERE_SDK = 'https://www.payhere.lk/lib/payhere.js';
+    const existing = document.querySelector(`script[src="${PAYHERE_SDK}"]`);
+    if (existing) {
+      existing.addEventListener('load', () => setPayHereReady(true));
+      existing.addEventListener('error', () => console.error('PayHere SDK failed to load'));
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = PAYHERE_SDK;
+    script.async = true;
+    script.onload = () => setPayHereReady(true);
+    script.onerror = () => console.error('PayHere SDK failed to load — check network connectivity');
+    document.head.appendChild(script);
+    return () => {
+      // Leave script in DOM so it isn't re-fetched on quick navigation
+    };
   }, []);
 
   useEffect(() => {
@@ -74,7 +99,7 @@ const Payment = () => {
   // --- PayHere Logic ---
   const handlePayHerePayment = async () => {
     if (!window.payhere) {
-      alert('PayHere SDK not loaded. Please refresh the page.');
+      alert('PayHere SDK is not available. Please check your internet connection and refresh the page.');
       return;
     }
 
@@ -237,10 +262,13 @@ const Payment = () => {
 
               <button
                 onClick={handlePayHerePayment}
-                className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#071A2F] px-5 py-4 text-sm font-black uppercase tracking-wide text-white shadow-xl shadow-[#071A2F]/15 transition-all hover:bg-[#111827] active:scale-[0.99] sm:text-base"
+                disabled={!payHereReady}
+                className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#071A2F] px-5 py-4 text-sm font-black uppercase tracking-wide text-white shadow-xl shadow-[#071A2F]/15 transition-all hover:bg-[#111827] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed sm:text-base"
               >
                 <CreditCard className="h-5 w-5 shrink-0 text-[#F5B942]" />
-                <span className="text-center leading-5">Pay by Card</span>
+                <span className="text-center leading-5">
+                  {payHereReady ? 'Pay by Card' : 'Loading payment gateway...'}
+                </span>
               </button>
 
               <div className="mt-4 flex items-center justify-center gap-2 text-xs font-bold text-[#111827]/45">
