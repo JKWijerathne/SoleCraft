@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { login, reset } from '../../store/slices/authSlice';
 import { Mail, Lock, LogIn, Loader2, AlertCircle, ShoppingBag } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import loginBg from '../../assets/images/loginPage.png';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -43,28 +44,15 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#F8FAFC] flex items-center justify-center p-4">
-      {/* Background glow effects from Login.css */}
-      <div className="absolute top-0 right-0 w-[420px] h-[420px] rounded-full bg-[radial-gradient(circle,rgba(245,185,66,0.18)_0%,transparent_70%)] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[420px] h-[420px] rounded-full bg-[radial-gradient(circle,rgba(7,26,47,0.10)_0%,transparent_70%)] pointer-events-none" />
-
-      <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-[15%] left-[10%] w-[300px] h-[300px] bg-gradient-to-r from-[#F5B942] to-[#D99A20] blur-[120px] opacity-[0.22] pointer-events-none"
-      />
-
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute bottom-[15%] right-[10%] w-[300px] h-[300px] bg-gradient-to-r from-[#071A2F] to-[#111827] blur-[120px] opacity-[0.12] pointer-events-none"
-      />
-
+    <div 
+      className="min-h-screen relative overflow-hidden flex items-center justify-center lg:justify-end p-4 lg:pr-[5%] xl:pr-[5%] bg-cover bg-center"
+      style={{ backgroundImage: `url(${loginBg})` }}
+    >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-md p-8 rounded-3xl border border-[#CBD5E1]/70 shadow-2xl shadow-[#071A2F]/10 bg-white/85 backdrop-blur-[12px] relative z-10"
+        className="w-full max-w-md p-8 relative z-10"
       >
         <div className="text-center mb-8">
           <motion.div

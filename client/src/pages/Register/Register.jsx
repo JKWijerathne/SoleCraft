@@ -12,6 +12,7 @@ import {
   ShoppingBag,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import loginBg from '../../assets/images/loginPage.png';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -62,21 +63,16 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] relative overflow-hidden flex items-center justify-center p-4">
-      {/* Background glow effects */}
-      <div className="absolute -top-[10%] -right-[10%] w-[50vw] h-[50vw] rounded-full bg-[radial-gradient(circle,rgba(245,185,66,0.18)_0%,transparent_70%)] z-0" />
-      <div className="absolute -bottom-[10%] -left-[10%] w-[40vw] h-[40vw] rounded-full bg-[radial-gradient(circle,rgba(7,26,47,0.10)_0%,transparent_70%)] z-0" />
-
+    <div 
+      className="min-h-screen relative overflow-hidden flex items-center justify-center lg:justify-end p-4 lg:pr-[5%] xl:pr-[5%] bg-cover bg-center"
+      style={{ backgroundImage: `url(${loginBg})` }}
+    >
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-lg p-6 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] border border-[#CBD5E1]/70 shadow-2xl shadow-[#071A2F]/10 relative overflow-hidden z-10 bg-white/85 backdrop-blur-[20px]"
+        className="w-full max-w-lg p-6 sm:p-8 relative overflow-hidden z-10"
       >
-        <div className="absolute top-0 right-0 p-8 opacity-5 text-[#071A2F]">
-          <ShoppingBag className="w-32 h-32 rotate-12" />
-        </div>
-
         <div className="text-center mb-8 relative z-10">
           <motion.div
             initial={{ scale: 0.85, y: -10 }}
