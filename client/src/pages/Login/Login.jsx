@@ -45,14 +45,14 @@ const Login = () => {
 
   return (
     <div 
-      className="min-h-screen relative overflow-hidden flex items-center justify-center lg:justify-end p-4 lg:pr-[5%] xl:pr-[5%] bg-cover bg-center"
+      className="min-h-[calc(100vh+120px)] relative overflow-hidden flex items-center justify-center lg:justify-end p-4 lg:pr-[12%] xl:pr-[15%] bg-cover bg-center -mt-[120px] pt-[120px]"
       style={{ backgroundImage: `url(${loginBg})` }}
     >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-md p-8 relative z-10"
+        className="w-full max-w-md p-8 relative z-10 -mt-16 lg:-mt-24"
       >
         <div className="text-center mb-8">
           <motion.div

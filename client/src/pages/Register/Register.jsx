@@ -64,14 +64,14 @@ const Register = () => {
 
   return (
     <div 
-      className="min-h-screen relative overflow-hidden flex items-center justify-center lg:justify-end p-4 lg:pr-[5%] xl:pr-[5%] bg-cover bg-center"
+      className="min-h-[calc(100vh+120px)] relative overflow-hidden flex items-center justify-center lg:justify-end p-4 lg:pr-[12%] xl:pr-[15%] bg-cover bg-center -mt-[120px] pt-[120px]"
       style={{ backgroundImage: `url(${loginBg})` }}
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-lg p-6 sm:p-8 relative overflow-hidden z-10"
+        className="w-full max-w-lg p-6 sm:p-8 relative overflow-hidden z-10 -mt-16 lg:-mt-24"
       >
         <div className="text-center mb-8 relative z-10">
           <motion.div
