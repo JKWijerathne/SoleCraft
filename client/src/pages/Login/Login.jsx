@@ -133,9 +133,9 @@ const Login = () => {
                 Password
               </label>
 
-              <a href="#" className="text-xs text-[#D99A20] hover:text-[#071A2F] transition-colors font-semibold">
+              <Link to="/forgot-password" className="text-xs text-[#D99A20] hover:text-[#071A2F] transition-colors font-semibold">
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
             <div className="relative group">

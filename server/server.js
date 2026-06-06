@@ -48,16 +48,16 @@ app.use('/api/payments/paypal', paypalRoutes);
 app.use('/api/payhere', payhereRoutes);
 
 app.get('/api/config/paypal', (req, res) => {
-    res.send({ clientId: process.env.PAYPAL_CLIENT_ID });
+  res.send({ clientId: process.env.PAYPAL_CLIENT_ID });
 });
 
 // Health-check / test route
 app.get('/', (req, res) => {
-    res.send('SoleCraft backend is running');
+  res.send('SoleCraft backend is running');
 });
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 });
