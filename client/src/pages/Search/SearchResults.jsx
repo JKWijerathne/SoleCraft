@@ -28,14 +28,17 @@ const SearchResults = () => {
   const { products, loading, error } = useSelector((state) => state.products);
   const query = normalize(searchParams.get('q'));
   const displayQuery = searchParams.get('q')?.trim() || '';
+  const isAll = searchParams.get('all') === 'true';
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  const filteredProducts = query
-    ? products.filter((product) => productMatchesQuery(product, query))
-    : [];
+  const filteredProducts = isAll
+    ? products
+    : query
+      ? products.filter((product) => productMatchesQuery(product, query))
+      : [];
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] pt-8 pb-24 px-4 md:px-6">
@@ -65,9 +68,11 @@ const SearchResults = () => {
             transition={{ delay: 0.1 }}
             className="text-[#111827]/60 mt-3 font-medium max-w-2xl"
           >
-            {displayQuery
-              ? `Showing products related to "${displayQuery}".`
-              : 'Enter a product name, category, type, occasion, or style from the search bar.'}
+            {isAll 
+              ? 'Showing all available products in our collection.'
+              : displayQuery
+                ? `Showing products related to "${displayQuery}".`
+                : 'Enter a product name, category, type, occasion, or style from the search bar.'}
           </motion.p>
         </div>
 
@@ -86,7 +91,7 @@ const SearchResults = () => {
               <p className="text-sm font-medium">{error}</p>
             </div>
           </div>
-        ) : !query ? (
+        ) : !query && !isAll ? (
           <div className="text-center py-32 rounded-[3rem] bg-white border border-dashed border-[#CBD5E1] shadow-sm my-10">
             <h3 className="text-2xl font-black uppercase italic text-[#071A2F]/60 mb-2">
               Start a Search
@@ -116,9 +121,11 @@ const SearchResults = () => {
               <span className="text-sm font-bold uppercase tracking-widest text-[#071A2F]">
                 {filteredProducts.length} result{filteredProducts.length === 1 ? '' : 's'}
               </span>
-              <span className="px-3 py-1 bg-white border border-[#CBD5E1]/60 rounded-full text-xs font-bold text-[#111827]/70 shadow-sm">
-                {displayQuery}
-              </span>
+              {!isAll && displayQuery && (
+                <span className="px-3 py-1 bg-white border border-[#CBD5E1]/60 rounded-full text-xs font-bold text-[#111827]/70 shadow-sm">
+                  {displayQuery}
+                </span>
+              )}
             </div>
             <ProductGrid products={filteredProducts} />
           </>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, reset } from '../../store/slices/productSlice';
 import ProductCard from '../../components/products/ProductCard.jsx';
@@ -107,14 +108,18 @@ const Home = () => {
               </p>
 
               <div className="flex flex-wrap gap-4">
-                <button className="px-7 py-3.5 bg-[#F5B942] text-[#071A2F] text-xs font-black uppercase tracking-widest rounded-xl hover:bg-[#D99A20] transition-all flex items-center gap-2 group shadow-xl shadow-[#F5B942]/25 active:scale-95">
-                  Explore Collection
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
+                <Link to="/search?all=true">
+                  <button className="px-7 py-3.5 bg-[#F5B942] text-[#071A2F] text-xs font-black uppercase tracking-widest rounded-xl hover:bg-[#D99A20] transition-all flex items-center gap-2 group shadow-xl shadow-[#F5B942]/25 active:scale-95">
+                    Explore Collection
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </Link>
 
-                <button className="px-7 py-3.5 bg-white/95 border border-white/60 text-[#071A2F] text-xs font-black uppercase tracking-widest rounded-xl hover:bg-[#071A2F] hover:text-white transition-all shadow-sm active:scale-95">
-                  Learn More
-                </button>
+                <Link to="/about">
+                  <button className="px-7 py-3.5 bg-white/95 border border-white/60 text-[#071A2F] text-xs font-black uppercase tracking-widest rounded-xl hover:bg-[#071A2F] hover:text-white transition-all shadow-sm active:scale-95">
+                    Learn More
+                  </button>
+                </Link>
               </div>
             </motion.div>
           </div>
@@ -243,9 +248,11 @@ const Home = () => {
           )}
 
           <div className="mt-20 text-center">
-            <button className="px-12 py-5 border-2 border-[#071A2F]/15 rounded-2xl text-[#071A2F] font-black uppercase tracking-[0.2em] hover:bg-[#071A2F] hover:text-white transition-all duration-500 active:scale-95">
-              View All Products
-            </button>
+            <Link to="/search?all=true">
+              <button className="px-12 py-5 border-2 border-[#071A2F]/15 rounded-2xl text-[#071A2F] font-black uppercase tracking-[0.2em] hover:bg-[#071A2F] hover:text-white transition-all duration-500 active:scale-95">
+                View All Products
+              </button>
+            </Link>
           </div>
         </div>
       </section>
