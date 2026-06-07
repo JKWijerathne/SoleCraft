@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { createOrder, resetOrder } from '../../store/slices/orderSlice';
-import { logout } from '../../store/slices/authSlice';
+import { logout, updateProfile } from '../../store/slices/authSlice';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -14,13 +14,15 @@ const Checkout = () => {
   const { user, token } = useSelector((state) => state.auth);
 
   const [shippingDetails, setShippingDetails] = useState({
-    fullName: '',
-    phone: '',
-    address: '',
+    fullName: user?.name || '',
+    phone: user?.phone || '',
+    address: user?.address || '',
     city: '',
     postalCode: '',
     country: 'Sri Lanka',
   });
+
+  const [saveDetails, setSaveDetails] = useState(false);
 
   const [paymentMethod, setPaymentMethod] = useState('PayPal');
 
@@ -83,6 +85,10 @@ const Checkout = () => {
       alert('Your cart is empty.');
       navigate('/cart');
       return;
+    }
+
+    if (saveDetails) {
+      dispatch(updateProfile({ phone: shippingDetails.phone, address: shippingDetails.address }));
     }
 
     const orderData = {
@@ -211,6 +217,20 @@ const Checkout = () => {
                       required
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#F5B942] outline-none"
                     />
+                  </div>
+
+                  <div className="sm:col-span-2 mt-2">
+                    <label className="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={saveDetails}
+                        onChange={(e) => setSaveDetails(e.target.checked)}
+                        className="w-5 h-5 rounded border-gray-300 text-[#F5B942] focus:ring-[#F5B942]"
+                      />
+                      <span className="text-sm font-medium text-gray-700">
+                        Save these details to my profile for future orders
+                      </span>
+                    </label>
                   </div>
                 </div>
               </div>

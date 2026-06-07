@@ -22,10 +22,21 @@ const getProfile = async (token) => {
   return response.data;
 };
 
+const updateProfile = async (userData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.put(`${API_URL}/profile`, userData, config);
+  return response.data;
+};
+
 const authService = {
   register,
   login,
   getProfile,
+  updateProfile,
 };
 
 export default authService;

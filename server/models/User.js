@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema(
       minlength: 6,
       select: false, // Don't return password by default
     },
+    phone: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
     isAdmin: {
       type: Boolean,
       default: false,
@@ -39,9 +45,10 @@ const userSchema = new mongoose.Schema(
 );
 
 // Encrypt password using bcrypt
-userSchema.pre('save', async function (next) {
+// NOTE: In Mongoose v6+, async middleware does NOT use `next` — just return early.
+userSchema.pre('save', async function () {
   if (!this.isModified('password')) {
-    next();
+    return; // stop here — don't re-hash if password wasn't changed
   }
 
   const salt = await bcrypt.genSalt(10);

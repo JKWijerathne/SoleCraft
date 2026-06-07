@@ -10,6 +10,8 @@ import {
   Loader2,
   AlertCircle,
   ShoppingBag,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import loginBg from '../../assets/images/loginPage.png';
@@ -20,11 +22,15 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    phone: '',
+    address: '',
   });
 
   const [validationError, setValidationError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const { name, email, password, confirmPassword } = formData;
+  const { name, email, password, confirmPassword, phone, address } = formData;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -59,7 +65,7 @@ const Register = () => {
       return;
     }
 
-    dispatch(register({ name, email, password }));
+    dispatch(register({ name, email, password, phone, address }));
   };
 
   return (
@@ -163,6 +169,46 @@ const Register = () => {
             </div>
           </div>
 
+          <div className="space-y-2 md:col-span-1">
+            <label
+              className="text-xs font-bold text-[#111827]/60 uppercase tracking-wider ml-1"
+              htmlFor="phone"
+            >
+              Phone Number (Optional)
+            </label>
+
+            <div className="relative group">
+              <input
+                id="phone"
+                type="text"
+                value={phone}
+                onChange={onChange}
+                className="w-full bg-white border border-[#CBD5E1]/80 rounded-2xl py-3.5 px-4 text-[#071A2F] placeholder:text-[#111827]/35 focus:outline-none focus:ring-2 focus:ring-[#F5B942]/50 focus:border-[#F5B942] focus:bg-white transition-all shadow-sm"
+                placeholder="071 234 5678"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2 md:col-span-1">
+            <label
+              className="text-xs font-bold text-[#111827]/60 uppercase tracking-wider ml-1"
+              htmlFor="address"
+            >
+              Address (Optional)
+            </label>
+
+            <div className="relative group">
+              <input
+                id="address"
+                type="text"
+                value={address}
+                onChange={onChange}
+                className="w-full bg-white border border-[#CBD5E1]/80 rounded-2xl py-3.5 px-4 text-[#071A2F] placeholder:text-[#111827]/35 focus:outline-none focus:ring-2 focus:ring-[#F5B942]/50 focus:border-[#F5B942] focus:bg-white transition-all shadow-sm"
+                placeholder="123 Main St, Colombo"
+              />
+            </div>
+          </div>
+
           <div className="space-y-2">
             <label
               className="text-xs font-bold text-[#111827]/60 uppercase tracking-wider ml-1"
@@ -176,13 +222,21 @@ const Register = () => {
 
               <input
                 id="password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={onChange}
-                className="w-full bg-white border border-[#CBD5E1]/80 rounded-2xl py-3.5 pl-12 pr-4 text-[#071A2F] placeholder:text-[#111827]/35 focus:outline-none focus:ring-2 focus:ring-[#F5B942]/50 focus:border-[#F5B942] focus:bg-white transition-all shadow-sm"
+                className="w-full bg-white border border-[#CBD5E1]/80 rounded-2xl py-3.5 pl-12 pr-12 text-[#071A2F] placeholder:text-[#111827]/35 focus:outline-none focus:ring-2 focus:ring-[#F5B942]/50 focus:border-[#F5B942] focus:bg-white transition-all shadow-sm"
                 placeholder="••••••••"
                 required
               />
+              
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#111827]/40 hover:text-[#D99A20] transition-colors focus:outline-none"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
           </div>
 
@@ -199,13 +253,21 @@ const Register = () => {
 
               <input
                 id="confirmPassword"
-                type="password"
+                type={showConfirmPassword ? 'text' : 'password'}
                 value={confirmPassword}
                 onChange={onChange}
-                className="w-full bg-white border border-[#CBD5E1]/80 rounded-2xl py-3.5 pl-12 pr-4 text-[#071A2F] placeholder:text-[#111827]/35 focus:outline-none focus:ring-2 focus:ring-[#F5B942]/50 focus:border-[#F5B942] focus:bg-white transition-all shadow-sm"
+                className="w-full bg-white border border-[#CBD5E1]/80 rounded-2xl py-3.5 pl-12 pr-12 text-[#071A2F] placeholder:text-[#111827]/35 focus:outline-none focus:ring-2 focus:ring-[#F5B942]/50 focus:border-[#F5B942] focus:bg-white transition-all shadow-sm"
                 placeholder="••••••••"
                 required
               />
+              
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#111827]/40 hover:text-[#D99A20] transition-colors focus:outline-none"
+              >
+                {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
           </div>
 

@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { logout } from '../../store/slices/authSlice';
+import { logout, updateProfile } from '../../store/slices/authSlice';
 import {
   ArrowRight,
   Heart,
@@ -11,11 +11,14 @@ import {
   Shield,
   ShoppingBag,
   User as UserIcon,
+  Edit2,
+  Save,
+  X,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Profile = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { user, loading: authLoading, error: authError } = useSelector((state) => state.auth);
   const { cartItems = [] } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,6 +28,46 @@ const Profile = () => {
       navigate('/login');
     }
   }, [user, navigate]);
+
+  const [editingPhone, setEditingPhone] = useState(false);
+  const [editingAddress, setEditingAddress] = useState(false);
+  const [saveError, setSaveError] = useState(null);
+  const [formData, setFormData] = useState({
+    phone: user?.phone || '',
+    address: user?.address || '',
+  });
+
+  const handleSavePhone = async () => {
+    setSaveError(null);
+    const result = await dispatch(updateProfile({ phone: formData.phone }));
+    if (result.meta.requestStatus === 'fulfilled') {
+      setEditingPhone(false);
+    } else {
+      const { status, message } = result.payload || {};
+      if (status === 401) {
+        dispatch(logout());
+        navigate('/login');
+      } else {
+        setSaveError(message || 'Failed to save phone number. Please try again.');
+      }
+    }
+  };
+
+  const handleSaveAddress = async () => {
+    setSaveError(null);
+    const result = await dispatch(updateProfile({ address: formData.address }));
+    if (result.meta.requestStatus === 'fulfilled') {
+      setEditingAddress(false);
+    } else {
+      const { status, message } = result.payload || {};
+      if (status === 401) {
+        dispatch(logout());
+        navigate('/login');
+      } else {
+        setSaveError(message || 'Failed to save address. Please try again.');
+      }
+    }
+  };
 
   const handleLogout = () => {
     dispatch(logout());
@@ -125,9 +168,11 @@ const Profile = () => {
 
             <div className="space-y-5 p-6 sm:p-8">
               <div>
-                <h3 className="mb-4 text-lg font-black text-[#071A2F]">
-                  Account Details
-                </h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-black text-[#071A2F]">
+                    Account Details
+                  </h3>
+                </div>
                 <div className="divide-y divide-[#CBD5E1]/60 rounded-2xl border border-[#CBD5E1]/70 bg-[#F8FAFC]">
                   <div className="grid gap-1 px-5 py-4 sm:grid-cols-[120px_1fr] sm:items-center">
                     <p className="text-xs font-black uppercase tracking-widest text-[#111827]/45">
@@ -147,6 +192,88 @@ const Profile = () => {
                   </div>
                   <div className="grid gap-1 px-5 py-4 sm:grid-cols-[120px_1fr] sm:items-center">
                     <p className="text-xs font-black uppercase tracking-widest text-[#111827]/45">
+                      Phone
+                    </p>
+                    {editingPhone ? (
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          className="w-full max-w-[200px] bg-white border border-[#CBD5E1] rounded-lg py-1.5 px-3 text-sm focus:outline-none focus:border-[#F5B942]"
+                          placeholder="Add phone number"
+                        />
+                        <button onClick={handleSavePhone} disabled={authLoading} className="text-xs font-bold text-green-600 hover:text-green-700 disabled:opacity-50">{authLoading ? 'Saving…' : 'Save'}</button>
+                        <button onClick={() => setEditingPhone(false)} className="text-xs font-bold text-gray-400 hover:text-gray-600">Cancel</button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between group">
+                        <div className="min-w-0 break-words text-sm font-bold text-[#111827]">
+                          {user.phone ? (
+                            user.phone
+                          ) : (
+                            <button
+                              onClick={() => setEditingPhone(true)}
+                              className="text-xs font-bold text-[#F5B942] hover:text-[#D99A20] transition-colors"
+                            >
+                              + Add Phone Number
+                            </button>
+                          )}
+                        </div>
+                        {user.phone && (
+                          <button
+                            onClick={() => setEditingPhone(true)}
+                            className="text-xs font-bold text-[#F5B942] hover:text-[#D99A20] transition-colors opacity-0 group-hover:opacity-100"
+                          >
+                            <Edit2 className="w-3 h-3" />
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="grid gap-1 px-5 py-4 sm:grid-cols-[120px_1fr] sm:items-center">
+                    <p className="text-xs font-black uppercase tracking-widest text-[#111827]/45">
+                      Address
+                    </p>
+                    {editingAddress ? (
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          value={formData.address}
+                          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                          className="w-full max-w-[250px] bg-white border border-[#CBD5E1] rounded-lg py-1.5 px-3 text-sm focus:outline-none focus:border-[#F5B942]"
+                          placeholder="Add address"
+                        />
+                        <button onClick={handleSaveAddress} disabled={authLoading} className="text-xs font-bold text-green-600 hover:text-green-700 disabled:opacity-50">{authLoading ? 'Saving…' : 'Save'}</button>
+                        <button onClick={() => setEditingAddress(false)} className="text-xs font-bold text-gray-400 hover:text-gray-600">Cancel</button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between group">
+                        <div className="min-w-0 break-words text-sm font-bold text-[#111827]">
+                          {user.address ? (
+                            user.address
+                          ) : (
+                            <button
+                              onClick={() => setEditingAddress(true)}
+                              className="text-xs font-bold text-[#F5B942] hover:text-[#D99A20] transition-colors"
+                            >
+                              + Add Address
+                            </button>
+                          )}
+                        </div>
+                        {user.address && (
+                          <button
+                            onClick={() => setEditingAddress(true)}
+                            className="text-xs font-bold text-[#F5B942] hover:text-[#D99A20] transition-colors opacity-0 group-hover:opacity-100"
+                          >
+                            <Edit2 className="w-3 h-3" />
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="grid gap-1 px-5 py-4 sm:grid-cols-[120px_1fr] sm:items-center">
+                    <p className="text-xs font-black uppercase tracking-widest text-[#111827]/45">
                       Role
                     </p>
                     <p className="text-sm font-bold text-[#111827]">
@@ -155,6 +282,12 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
+
+              {saveError && (
+                <div className="mt-3 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-xs font-semibold text-red-600">
+                  ⚠️ {saveError}
+                </div>
+              )}
 
               {isAdmin && (
                 <Link

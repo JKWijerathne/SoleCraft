@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { login, reset } from '../../store/slices/authSlice';
-import { Mail, Lock, LogIn, Loader2, AlertCircle, ShoppingBag } from 'lucide-react';
+import { Mail, Lock, LogIn, Loader2, AlertCircle, ShoppingBag, Eye, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import loginBg from '../../assets/images/loginPage.png';
 
@@ -11,6 +11,8 @@ const Login = () => {
     email: '',
     password: '',
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const { email, password } = formData;
 
@@ -131,13 +133,21 @@ const Login = () => {
 
               <input
                 id="password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={onChange}
-                className="w-full bg-white border border-[#CBD5E1]/80 rounded-xl py-3 pl-11 pr-4 text-[#071A2F] placeholder:text-[#111827]/35 focus:outline-none focus:ring-2 focus:ring-[#F5B942]/50 focus:border-[#F5B942] focus:bg-white transition-all shadow-sm"
+                className="w-full bg-white border border-[#CBD5E1]/80 rounded-xl py-3 pl-11 pr-11 text-[#071A2F] placeholder:text-[#111827]/35 focus:outline-none focus:ring-2 focus:ring-[#F5B942]/50 focus:border-[#F5B942] focus:bg-white transition-all shadow-sm"
                 placeholder="••••••••"
                 required
               />
+              
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#111827]/40 hover:text-[#D99A20] transition-colors focus:outline-none"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
           </div>
 
