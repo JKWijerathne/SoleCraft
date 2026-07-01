@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 import { protect, adminOnly } from '../middleware/adminMiddleware.js';
 import {
   // Dashboard
@@ -24,7 +25,9 @@ import {
 
 const router = express.Router();
 
-// Apply protect + adminOnly to every route in this router
+const upload = multer({ storage: multer.memoryStorage() });
+
+// Apply protect + adminOnly to every route 
 router.use(protect, adminOnly);
 
 // ─── Dashboard ────────────────────────────────────────────────
@@ -42,10 +45,10 @@ router.route('/users/:id')
 // ─── Products ─────────────────────────────────────────────────
 router.route('/products')
   .get(getAllProducts)
-  .post(createProduct);
+  .post(upload.single('image'), createProduct);   // FIX: upload middleware added
 
 router.route('/products/:id')
-  .put(updateProduct)
+  .put(upload.single('image'), updateProduct)     // FIX: upload middleware added
   .delete(deleteProduct);
 
 // ─── Orders ───────────────────────────────────────────────────

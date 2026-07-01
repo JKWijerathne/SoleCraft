@@ -1,44 +1,25 @@
 import User from '../models/User.js';
 import Product from '../models/Product.js';
 import Order from '../models/Order.js';
+import { uploadToCloudinary } from '../utils/imageUpload.js';
 
-// Helper: get uploaded image path
-const getImagePath = (req) => {
-  if (!req.file) return null;
 
-  // If using multer diskStorage
-  return `/uploads/${req.file.filename}`;
-
-  // If you use Cloudinary later, change this to:
-  // return req.file.path;
-};
-
-// Helper: convert checkbox/string values to boolean
+// Helper: convert various truthy representations to boolean
 const parseBoolean = (value) => {
-  if (value === true) return true;
-  if (value === false) return false;
-  if (value === 'true') return true;
-  if (value === 'false') return false;
-  if (value === 'on') return true;
+  if (value === true || value === 'true' || value === 'on') return true;
+  if (value === false || value === 'false' || value === 'off') return false;
   return false;
 };
 
 // Helper: parse sizes from FormData
 const parseSizes = (sizes) => {
   if (!sizes) return [];
-
-  if (Array.isArray(sizes)) {
-    return sizes;
-  }
-
+  if (Array.isArray(sizes)) return sizes;
   try {
     const parsed = JSON.parse(sizes);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
-    return sizes
-      .split(',')
-      .map((size) => size.trim())
-      .filter(Boolean);
+    return sizes.split(',').map((s) => s.trim()).filter(Boolean);
   }
 };
 
@@ -63,13 +44,7 @@ export const getDashboardStats = async (req, res) => {
       .limit(5)
       .populate('user', 'name email');
 
-    res.json({
-      totalUsers,
-      totalProducts,
-      totalOrders,
-      totalRevenue,
-      recentOrders,
-    });
+    res.json({ totalUsers, totalProducts, totalOrders, totalRevenue, recentOrders });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -94,11 +69,7 @@ export const getAllUsers = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
+    if (!user) return res.status(404).json({ message: 'User not found' });
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -111,10 +82,7 @@ export const getUserById = async (req, res) => {
 export const updateUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
     user.name = req.body.name ?? user.name;
     user.email = req.body.email ?? user.email;
@@ -139,19 +107,13 @@ export const updateUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
     if (user._id.toString() === req.user._id.toString()) {
-      return res.status(400).json({
-        message: 'Cannot delete your own account',
-      });
+      return res.status(400).json({ message: 'Cannot delete your own account' });
     }
 
     await user.deleteOne();
-
     res.json({ message: 'User removed successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -177,22 +139,10 @@ export const getAllProducts = async (req, res) => {
 export const createProduct = async (req, res) => {
   try {
     const {
-      name,
-      description,
-      price,
-      category,
-      gender,
-      type,
-      occasion,
-      sizes,
-      countInStock,
-      stock,
-      isSale,
-      sale,
-      discountPrice,
+      name, description, price, category,
+      gender, type, occasion, sizes,
+      countInStock, isSale, discountPrice,
     } = req.body;
-
-    const imagePath = getImagePath(req);
 
     if (!name || !description || !price || !category) {
       return res.status(400).json({
@@ -200,31 +150,30 @@ export const createProduct = async (req, res) => {
       });
     }
 
-    if (!imagePath) {
-      return res.status(400).json({
-        message: 'Product image is required',
-      });
+    // FIX: image now uploaded to Cloudinary (was local disk path before).
+    // adminRoutes.js must pass the file through upload.single('image') multer middleware.
+    if (!req.file) {
+      return res.status(400).json({ message: 'Product image is required' });
     }
+    const imageUrl = await uploadToCloudinary(req.file.buffer, 'products');
 
-    const saleStatus = parseBoolean(isSale ?? sale);
-    const stockValue = countInStock ?? stock ?? 0;
+    const saleStatus = parseBoolean(isSale);
 
     const product = await Product.create({
       name,
       description,
       price: Number(price),
-      image: imagePath,
+      image: imageUrl,
       category,
-
-      gender,
-      type,
-      occasion,
+      gender: gender || '',
+      type: type || '',
+      occasion: occasion || '',
       sizes: parseSizes(sizes),
-      countInStock: Number(stockValue),
-      stock: Number(stockValue),
+      countInStock: Number(countInStock ?? 0),
+      // FIX: removed phantom field writes — product.stock and product.sale
+      // do not exist in the Product schema and were silently ignored before.
       isSale: saleStatus,
-      sale: saleStatus,
-      discountPrice: discountPrice ? Number(discountPrice) : undefined,
+      discountPrice: discountPrice ? Number(discountPrice) : 0,
     });
 
     res.status(201).json(product);
@@ -239,39 +188,18 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
+    if (!product) return res.status(404).json({ message: 'Product not found' });
 
     const {
-      name,
-      description,
-      price,
-      category,
-      gender,
-      type,
-      occasion,
-      sizes,
-      countInStock,
-      stock,
-      isSale,
-      sale,
-      discountPrice,
+      name, description, price, category,
+      gender, type, occasion, sizes,
+      countInStock, isSale, discountPrice,
     } = req.body;
-
-    const imagePath = getImagePath(req);
 
     product.name = name ?? product.name;
     product.description = description ?? product.description;
     product.price = price !== undefined ? Number(price) : product.price;
     product.category = category ?? product.category;
-
-    if (imagePath) {
-      product.image = imagePath;
-    }
-
-    // Optional fields. These work only if your Product model has them.
     product.gender = gender ?? product.gender;
     product.type = type ?? product.type;
     product.occasion = occasion ?? product.occasion;
@@ -280,25 +208,28 @@ export const updateProduct = async (req, res) => {
       product.sizes = parseSizes(sizes);
     }
 
-    if (countInStock !== undefined || stock !== undefined) {
-      const stockValue = countInStock ?? stock;
-      product.countInStock = Number(stockValue);
-      product.stock = Number(stockValue);
+    if (countInStock !== undefined) {
+      // FIX: only writing to the real schema field countInStock.
+      // The phantom product.stock write has been removed.
+      product.countInStock = Number(countInStock);
     }
 
-    if (isSale !== undefined || sale !== undefined) {
-      const saleStatus = parseBoolean(isSale ?? sale);
-      product.isSale = saleStatus;
-      product.sale = saleStatus;
+    if (isSale !== undefined) {
+      // FIX: only writing to the real schema field isSale.
+      // The phantom product.sale write has been removed.
+      product.isSale = parseBoolean(isSale);
     }
 
     if (discountPrice !== undefined) {
-      product.discountPrice =
-        discountPrice === '' ? undefined : Number(discountPrice);
+      product.discountPrice = discountPrice === '' ? 0 : Number(discountPrice);
+    }
+
+    // FIX: image now uploaded to Cloudinary (consistent with productController.js)
+    if (req.file) {
+      product.image = await uploadToCloudinary(req.file.buffer, 'products');
     }
 
     const updatedProduct = await product.save();
-
     res.json(updatedProduct);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -311,13 +242,9 @@ export const updateProduct = async (req, res) => {
 export const deleteProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-
-    if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
-    }
+    if (!product) return res.status(404).json({ message: 'Product not found' });
 
     await product.deleteOne();
-
     res.json({ message: 'Product removed successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -333,7 +260,6 @@ export const getAllOrders = async (req, res) => {
     const orders = await Order.find()
       .sort({ createdAt: -1 })
       .populate('user', 'name email');
-
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -346,10 +272,7 @@ export const getAllOrders = async (req, res) => {
 export const markOrderAsDelivered = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
-
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
-    }
+    if (!order) return res.status(404).json({ message: 'Order not found' });
 
     if (!order.isPaid) {
       return res.status(400).json({
@@ -361,7 +284,6 @@ export const markOrderAsDelivered = async (req, res) => {
     order.deliveredAt = Date.now();
 
     const updatedOrder = await order.save();
-
     res.json(updatedOrder);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -374,13 +296,9 @@ export const markOrderAsDelivered = async (req, res) => {
 export const deleteOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
-
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
-    }
+    if (!order) return res.status(404).json({ message: 'Order not found' });
 
     await order.deleteOne();
-
     res.json({ message: 'Order removed successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
