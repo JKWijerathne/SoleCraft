@@ -41,13 +41,13 @@ const SearchResults = () => {
       : [];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pt-8 pb-24 px-4 md:px-6">
+    <div className="min-h-screen bg-transparent pt-8 pb-24 px-4 md:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-12 text-center md:text-left">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#CBD5E1]/70 text-[#D99A20] text-xs font-black uppercase tracking-widest mb-4 shadow-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-[#CBD5E1]/70 text-[#D99A20] text-xs font-extrabold uppercase tracking-widest mb-4 shadow-sm"
           >
             <Search className="w-4 h-4" />
             Search
@@ -57,9 +57,9 @@ const SearchResults = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
-            className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-[#071A2F]"
+            className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-[#071A2F]"
           >
-            Product <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D99A20] to-[#F5B942]">Results</span>
+            Product <span className="text-[#D99A20]">Results</span>
           </motion.h1>
 
           <motion.p
@@ -87,13 +87,13 @@ const SearchResults = () => {
           <div className="p-8 rounded-[2.5rem] bg-red-50 border border-red-200 text-red-600 max-w-2xl mx-auto flex items-center gap-6 my-20 shadow-sm">
             <AlertCircle size={32} />
             <div>
-              <h3 className="font-black uppercase italic text-lg mb-1">Search Error</h3>
+              <h3 className="font-extrabold uppercase text-lg mb-1">Search Error</h3>
               <p className="text-sm font-medium">{error}</p>
             </div>
           </div>
         ) : !query && !isAll ? (
           <div className="text-center py-32 rounded-[3rem] bg-white border border-dashed border-[#CBD5E1] shadow-sm my-10">
-            <h3 className="text-2xl font-black uppercase italic text-[#071A2F]/60 mb-2">
+            <h3 className="text-2xl font-extrabold uppercase text-[#071A2F]/60 mb-2">
               Start a Search
             </h3>
             <p className="text-[#111827]/45 font-medium tracking-wide uppercase text-xs">
@@ -102,7 +102,7 @@ const SearchResults = () => {
           </div>
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-32 rounded-[3rem] bg-white border border-dashed border-[#CBD5E1] shadow-sm my-10">
-            <h3 className="text-2xl font-black uppercase italic text-[#071A2F]/60 mb-2">
+            <h3 className="text-2xl font-extrabold uppercase text-[#071A2F]/60 mb-2">
               No matching products
             </h3>
             <p className="text-[#111827]/45 font-medium tracking-wide uppercase text-xs mb-8">
@@ -110,7 +110,7 @@ const SearchResults = () => {
             </p>
             <Link
               to="/"
-              className="inline-flex px-8 py-3 bg-[#F5B942] text-[#071A2F] text-xs font-black uppercase tracking-widest rounded-xl hover:bg-[#D99A20] transition-all"
+              className="inline-flex px-8 py-3 bg-[#F5B942] text-[#071A2F] text-xs font-extrabold uppercase tracking-widest rounded-xl hover:bg-[#D99A20] transition-all"
             >
               Browse Products
             </Link>

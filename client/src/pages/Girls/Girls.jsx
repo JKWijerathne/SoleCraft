@@ -47,16 +47,16 @@ const Girls = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] pt-8 pb-24 px-4 md:px-6">
+    <div className="min-h-screen bg-transparent pt-8 pb-24 px-4 md:px-6">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="mb-12 text-center md:text-left">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-[#071A2F]"
+            className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-[#071A2F]"
           >
-            Girls' <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D99A20] to-[#F5B942]">Collection</span>
+            Girls' <span className="text-[#D99A20]">Collection</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -89,13 +89,13 @@ const Girls = () => {
           <div className="p-8 rounded-[2.5rem] bg-red-50 border border-red-200 text-red-600 max-w-2xl mx-auto flex items-center gap-6 my-20 shadow-sm">
             <AlertCircle size={32} />
             <div>
-              <h3 className="font-black uppercase italic text-lg mb-1">Error Loading Products</h3>
+              <h3 className="font-extrabold uppercase text-lg mb-1">Error Loading Products</h3>
               <p className="text-sm font-medium">{error}</p>
             </div>
           </div>
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-32 rounded-[3rem] bg-white border border-dashed border-[#CBD5E1] shadow-sm my-10">
-            <h3 className="text-2xl font-black uppercase italic text-[#071A2F]/60 mb-2">No items found</h3>
+            <h3 className="text-2xl font-extrabold uppercase text-[#071A2F]/60 mb-2">No items found</h3>
             <p className="text-[#111827]/45 font-medium tracking-wide uppercase text-xs">
               Try adjusting your filters to find what you're looking for.
             </p>

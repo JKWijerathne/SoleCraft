@@ -76,10 +76,10 @@ const Contact = () => {
   ];
 
   const inputClassName = 'w-full rounded-2xl border border-[#CBD5E1]/80 bg-white px-5 py-4 text-[#071A2F] shadow-sm outline-none transition-all placeholder:text-[#111827]/35 focus:border-[#F5B942] focus:ring-2 focus:ring-[#F5B942]/50';
-  const labelClassName = 'mb-2 block text-xs font-black uppercase tracking-[0.18em] text-[#071A2F]';
+  const labelClassName = 'mb-2 block text-xs font-extrabold uppercase tracking-[0.18em] text-[#071A2F]';
 
   return (
-    <div className="flex-1 overflow-hidden bg-[#F8FAFC] text-[#111827] selection:bg-[#F5B942]/35 selection:text-[#071A2F]">
+    <div className="flex-1 overflow-hidden bg-transparent text-[#111827] selection:bg-[#F5B942]/35 selection:text-[#071A2F]">
       <section className="px-4 pb-10 pt-6 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -89,13 +89,13 @@ const Contact = () => {
         >
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
             <div>
-              <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#F5B942]/20 px-4 py-2 text-xs font-black uppercase tracking-[0.24em] text-[#D99A20]">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#F5B942]/20 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.24em] text-[#D99A20]">
                 <MessageCircle className="h-4 w-4" />
                 Contact SoleCraft
               </span>
-              <h1 className="text-5xl font-black italic uppercase leading-none tracking-tighter text-[#071A2F] sm:text-6xl lg:text-7xl">
+              <h1 className="text-5xl font-extrabold uppercase leading-none tracking-tighter text-[#071A2F] sm:text-6xl lg:text-7xl">
                 Let&apos;s Talk
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#D99A20] to-[#F5B942]">
+                <span className="block text-[#D99A20]">
                   Footwear.
                 </span>
               </h1>
@@ -107,15 +107,15 @@ const Contact = () => {
                 will help you get to the right pair faster.
               </p>
               <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <div className="flex items-center gap-3 rounded-2xl border border-[#CBD5E1]/70 bg-[#F8FAFC] px-4 py-3">
+                <div className="flex items-center gap-3 rounded-2xl border border-[#CBD5E1]/70 bg-transparent px-4 py-3">
                   <Clock3 className="h-5 w-5 text-[#D99A20]" />
-                  <span className="text-xs font-black uppercase tracking-[0.18em] text-[#071A2F]">
+                  <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#071A2F]">
                     Replies within 24h
                   </span>
                 </div>
-                <div className="flex items-center gap-3 rounded-2xl border border-[#CBD5E1]/70 bg-[#F8FAFC] px-4 py-3">
+                <div className="flex items-center gap-3 rounded-2xl border border-[#CBD5E1]/70 bg-transparent px-4 py-3">
                   <ShieldCheck className="h-5 w-5 text-[#D99A20]" />
-                  <span className="text-xs font-black uppercase tracking-[0.18em] text-[#071A2F]">
+                  <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#071A2F]">
                     Secure support
                   </span>
                 </div>
@@ -134,7 +134,7 @@ const Contact = () => {
             className="lg:col-span-4"
           >
             <div className="sticky top-32 overflow-hidden rounded-[2.5rem] border border-[#CBD5E1]/70 bg-[#071A2F] p-7 text-white shadow-[0_30px_60px_-24px_rgba(7,26,47,0.45)] sm:p-8">
-              <h2 className="text-2xl font-black italic uppercase tracking-tighter">
+              <h2 className="text-2xl font-extrabold tracking-tight leading-tight">
                 Get In Touch
               </h2>
               <p className="mt-3 text-sm font-medium leading-7 text-[#CBD5E1]">
@@ -150,7 +150,7 @@ const Contact = () => {
                         <Icon className="h-5 w-5" />
                       </div>
                       <div>
-                        <p className="mb-1 text-[11px] font-black uppercase tracking-[0.2em] text-[#F5B942]">
+                        <p className="mb-1 text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#F5B942]">
                           {method.label}
                         </p>
                         <p className="font-semibold leading-6 text-white">
@@ -180,7 +180,7 @@ const Contact = () => {
               </div>
 
               <div className="mt-8 rounded-2xl border border-[#F5B942]/30 bg-[#F5B942]/10 p-5">
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-[#F5B942]">
+                <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#F5B942]">
                   Store Hours
                 </p>
                 <p className="mt-2 text-sm font-semibold leading-7 text-white">
@@ -200,10 +200,10 @@ const Contact = () => {
             <div className="rounded-[2.5rem] border border-[#CBD5E1]/70 bg-white p-6 shadow-sm sm:p-8 lg:p-10">
               <div className="mb-8 flex flex-col justify-between gap-4 border-b border-[#CBD5E1]/70 pb-6 md:flex-row md:items-end">
                 <div>
-                  <span className="mb-2 block text-xs font-black uppercase tracking-[0.3em] text-[#D99A20]">
+                  <span className="mb-2 block text-xs font-extrabold uppercase tracking-[0.3em] text-[#D99A20]">
                     Support Form
                   </span>
-                  <h2 className="text-3xl font-black italic uppercase tracking-tighter text-[#071A2F] sm:text-4xl">
+                  <h2 className="text-3xl font-extrabold tracking-tight leading-tight text-[#071A2F] sm:text-4xl">
                     Send Us A Message
                   </h2>
                 </div>
@@ -303,7 +303,7 @@ const Contact = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#F5B942] px-8 py-5 text-xs font-black uppercase tracking-[0.2em] text-[#071A2F] shadow-xl shadow-[#F5B942]/25 transition-all hover:bg-[#D99A20] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100"
+                  className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#F5B942] px-8 py-5 text-xs font-extrabold uppercase tracking-[0.2em] text-[#071A2F] shadow-xl shadow-[#F5B942]/25 transition-all hover:bg-[#D99A20] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100"
                 >
                   {isSubmitting ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
