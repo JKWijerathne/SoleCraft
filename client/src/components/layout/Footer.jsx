@@ -87,7 +87,7 @@ const Footer = () => {
     <footer className="relative mt-auto bg-[#020617] text-white">
       <button
         onClick={scrollToTop}
-        className="absolute right-5 top-5 hidden items-center gap-1 text-[10px] font-black uppercase tracking-widest text-slate-400 transition hover:text-[#F5B942] md:flex"
+        className="absolute right-5 top-5 hidden items-center gap-1 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 transition hover:text-[#F5B942] md:flex"
       >
         <ChevronUp className="h-4 w-4" />
         Top
@@ -103,7 +103,7 @@ const Footer = () => {
                 <img src="/Logo.png" alt="SoleCraft Logo" className="w-full h-full object-cover" />
               </div>
 
-              <span className="text-2xl font-black italic uppercase tracking-tight">
+              <span className="text-2xl font-extrabold uppercase tracking-tight">
                 Sole<span className="text-[#F5B942]">Craft</span>
               </span>
             </Link>
@@ -133,7 +133,7 @@ const Footer = () => {
           {/* Link Columns */}
           {footerColumns.map((column) => (
             <div key={column.title}>
-              <h4 className="mb-4 text-sm font-black uppercase tracking-wide text-white">
+              <h4 className="mb-4 text-sm font-extrabold uppercase tracking-wide text-white">
                 {column.title}
               </h4>
 
@@ -154,7 +154,7 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div>
-            <h4 className="mb-4 text-sm font-black uppercase tracking-wide text-white">
+            <h4 className="mb-4 text-sm font-extrabold uppercase tracking-wide text-white">
               Join the Drop List
             </h4>
 
@@ -223,7 +223,7 @@ const Footer = () => {
             {['Visa', 'Mastercard', 'PayPal', 'ApplePay'].map((brand) => (
               <span
                 key={brand}
-                className="rounded border border-white/10 px-2.5 py-1 text-[9px] font-black uppercase tracking-widest text-slate-400"
+                className="rounded border border-white/10 px-2.5 py-1 text-[9px] font-extrabold uppercase tracking-widest text-slate-400"
               >
                 {brand}
               </span>
