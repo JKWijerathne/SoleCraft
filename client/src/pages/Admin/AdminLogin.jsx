@@ -34,9 +34,9 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
+    <div className="min-h-screen flex items-center justify-center bg-transparent">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-[#CBD5E1]/70">
-        <h2 className="text-2xl font-black text-center text-[#071A2F] mb-8">Admin Login</h2>
+        <h2 className="text-2xl font-extrabold text-center text-[#071A2F] mb-8">Admin Login</h2>
         {error && <div className="bg-red-100 text-red-600 p-3 rounded-lg mb-4 text-sm font-semibold">{error}</div>}
         <form onSubmit={onSubmit} className="space-y-6">
           <div>
@@ -64,7 +64,7 @@ const AdminLogin = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#F5B942] hover:bg-[#D99A20] text-[#071A2F] font-black uppercase tracking-widest py-3 rounded-xl transition-all shadow-lg shadow-[#F5B942]/20"
+            className="w-full bg-[#F5B942] hover:bg-[#D99A20] text-[#071A2F] font-extrabold uppercase tracking-widest py-3 rounded-xl transition-all shadow-lg shadow-[#F5B942]/20"
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>

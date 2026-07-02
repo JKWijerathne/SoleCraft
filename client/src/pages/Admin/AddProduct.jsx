@@ -64,13 +64,13 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-transparent py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center gap-4 mb-8">
           <Link to="/admin/products" className="p-2 hover:bg-[#CBD5E1]/30 rounded-full transition-colors">
             <ArrowLeft className="w-6 h-6 text-[#071A2F]" />
           </Link>
-          <h1 className="text-3xl font-black text-[#071A2F]">Add Product</h1>
+          <h1 className="text-3xl font-extrabold text-[#071A2F]">Add Product</h1>
         </div>
 
         {error && <div className="bg-red-100 text-red-600 p-4 rounded-xl mb-6 font-semibold">{error}</div>}

@@ -45,10 +45,10 @@ const AdminProducts = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-transparent py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <h1 className="text-3xl font-black text-[#071A2F]">
+          <h1 className="text-3xl font-extrabold text-[#071A2F]">
             Products
           </h1>
 
@@ -76,23 +76,23 @@ const AdminProducts = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-[#F8FAFC] border-b border-[#CBD5E1]/50">
-                    <th className="p-4 font-black text-[#071A2F] text-sm uppercase tracking-wider">
+                  <tr className="bg-transparent border-b border-[#CBD5E1]/50">
+                    <th className="p-4 font-extrabold text-[#071A2F] text-sm uppercase tracking-wider">
                       Image
                     </th>
-                    <th className="p-4 font-black text-[#071A2F] text-sm uppercase tracking-wider">
+                    <th className="p-4 font-extrabold text-[#071A2F] text-sm uppercase tracking-wider">
                       Name
                     </th>
-                    <th className="p-4 font-black text-[#071A2F] text-sm uppercase tracking-wider">
+                    <th className="p-4 font-extrabold text-[#071A2F] text-sm uppercase tracking-wider">
                       Price
                     </th>
-                    <th className="p-4 font-black text-[#071A2F] text-sm uppercase tracking-wider">
+                    <th className="p-4 font-extrabold text-[#071A2F] text-sm uppercase tracking-wider">
                       Category
                     </th>
-                    <th className="p-4 font-black text-[#071A2F] text-sm uppercase tracking-wider">
+                    <th className="p-4 font-extrabold text-[#071A2F] text-sm uppercase tracking-wider">
                       Stock
                     </th>
-                    <th className="p-4 font-black text-[#071A2F] text-sm uppercase tracking-wider">
+                    <th className="p-4 font-extrabold text-[#071A2F] text-sm uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
@@ -103,7 +103,7 @@ const AdminProducts = () => {
                     products.map((product) => (
                       <tr
                         key={product._id}
-                        className="border-b border-[#CBD5E1]/50 hover:bg-[#F8FAFC]/50 transition-colors"
+                        className="border-b border-[#CBD5E1]/50 hover:bg-transparent/50 transition-colors"
                       >
                         <td className="p-4">
                           <img
@@ -113,19 +113,19 @@ const AdminProducts = () => {
                           />
                         </td>
 
-                        <td className="p-4 font-bold text-[#111827] min-w-[180px]">
+                        <td className="p-4 text-sm font-medium text-[#111827] min-w-[180px]">
                           {product.name}
                         </td>
 
-                        <td className="p-4 font-semibold text-[#111827]/70">
+                        <td className="p-4 text-sm font-normal text-[#111827]/70">
                           Rs. {Number(product.price).toLocaleString()}
                         </td>
 
-                        <td className="p-4 font-semibold text-[#111827]/70 capitalize">
+                        <td className="p-4 text-sm font-normal text-[#111827]/70 capitalize">
                           {product.category || '-'}
                         </td>
 
-                        <td className="p-4 font-semibold text-[#111827]/70">
+                        <td className="p-4 text-sm font-normal text-[#111827]/70">
                           {product.countInStock ?? product.stock ?? 0}
                         </td>
 

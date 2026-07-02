@@ -130,7 +130,7 @@ const EditProduct = () => {
 
   if (fetching) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center font-bold text-xl text-[#071A2F]">
+      <div className="min-h-screen bg-transparent flex items-center justify-center font-bold text-xl text-[#071A2F]">
         Loading product...
       </div>
     );
@@ -138,7 +138,7 @@ const EditProduct = () => {
 
   if (fetchError) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-transparent flex items-center justify-center px-4">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-[#CBD5E1]/50 text-center">
           <p className="text-red-600 font-bold mb-4">{fetchError}</p>
           <Link
@@ -153,7 +153,7 @@ const EditProduct = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-transparent py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center gap-4 mb-8">
           <Link
@@ -163,7 +163,7 @@ const EditProduct = () => {
             <ArrowLeft className="w-6 h-6 text-[#071A2F]" />
           </Link>
 
-          <h1 className="text-3xl font-black text-[#071A2F]">
+          <h1 className="text-3xl font-extrabold text-[#071A2F]">
             Edit Product
           </h1>
         </div>
