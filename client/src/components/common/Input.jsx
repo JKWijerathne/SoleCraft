@@ -21,7 +21,7 @@ const Input = ({
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
       {label && (
-        <label htmlFor={id} className="text-xs font-black uppercase tracking-widest text-[#111827]/60 ml-1">
+        <label htmlFor={id} className="text-xs font-extrabold uppercase tracking-widest text-[#111827]/60 ml-1">
           {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}

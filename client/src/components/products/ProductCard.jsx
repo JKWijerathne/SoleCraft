@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../store/slices/cartSlice';
+import { Star } from 'lucide-react';
 
 const ProductCard = ({ product, onAddToCart }) => {
   const dispatch = useDispatch();
@@ -20,53 +21,57 @@ const ProductCard = ({ product, onAddToCart }) => {
     }
   };
 
+  const hasDiscount = product.isSale && product.discountPrice > 0;
+  const displayPrice = hasDiscount ? product.price - product.discountPrice : product.price;
+
   return (
-    <div className="bg-white rounded-2xl overflow-hidden border border-[#CBD5E1]/70 shadow-sm hover:shadow-xl hover:shadow-[#071A2F]/10 hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
-      <Link to={`/product/${product._id}`} className="block relative w-full h-64 bg-[#F8FAFC] overflow-hidden flex-shrink-0 group">
+    <div className="group flex flex-col h-full bg-transparent">
+      {/* Image Container */}
+      <Link to={`/product/${product._id}`} className="block relative w-full h-52 md:h-60 rounded-[1.5rem] bg-white border border-[#CBD5E1]/40 overflow-hidden mb-4 shadow-sm group-hover:shadow-md transition-shadow">
         <img
           src={product.image}
           alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
         />
-
         {product.isSale && (
-          <span className="absolute top-4 left-4 bg-[#F5B942] text-[#071A2F] px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide shadow-md">
-            Sale: -Rs. {product.discountPrice?.toLocaleString()}
+          <span className="absolute top-3 left-3 bg-[#F5B942] text-[#071A2F] px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-sm">
+            Sale
           </span>
         )}
       </Link>
 
-      <div className="p-5 flex flex-col flex-grow">
-        <p className="text-sm text-[#111827]/55 capitalize mb-1 font-medium">
-          {product.category}
-        </p>
-
-        <Link to={`/product/${product._id}`} className="hover:text-[#F5B942] transition-colors">
-          <h3 className="text-lg font-semibold text-[#071A2F] mb-3 line-clamp-2">
-            {product.name}
-          </h3>
-        </Link>
-
-        <div className="mt-auto">
-          <div className="flex items-center gap-3 mb-4">
-            {product.isSale && product.discountPrice > 0 ? (
-              <>
-                <span className="text-lg font-bold text-[#071A2F]">
-                  Rs. {(product.price - product.discountPrice).toLocaleString()}
-                </span>
-                <span className="text-[#111827]/35 line-through text-sm">
-                  Rs. {product.price.toLocaleString()}
-                </span>
-              </>
-            ) : (
-              <span className="text-lg font-bold text-[#071A2F]">
+      {/* Content Container */}
+      <div className="flex flex-col flex-grow px-1">
+        {/* Title and Price */}
+        <div className="flex justify-between items-start gap-3 mb-1.5">
+          <Link to={`/product/${product._id}`} className="hover:text-[#D99A20] transition-colors flex-1">
+            <h3 className="text-[16px] font-extrabold text-[#071A2F] line-clamp-1 leading-snug tracking-tight">
+              {product.name}
+            </h3>
+          </Link>
+          <div className="text-right shrink-0 flex flex-col items-end">
+            <span className="text-[15px] font-semibold text-[#071A2F]">
+              Rs. {displayPrice.toLocaleString()}
+            </span>
+            {hasDiscount && (
+              <span className="text-[11px] font-medium text-[#071A2F]/60 line-through">
                 Rs. {product.price.toLocaleString()}
               </span>
             )}
           </div>
+        </div>
 
+        {/* Ratings (Mocked based on reference) */}
+        <div className="flex items-center gap-[2px] mb-4 text-[#F5B942]">
+          {[...Array(5)].map((_, i) => (
+            <Star key={i} className="w-3.5 h-3.5 fill-current" />
+          ))}
+        </div>
+
+        {/* Action Button */}
+        <div className="mt-auto">
           <button
-            className="w-full bg-[#071A2F] text-white py-3 rounded-xl font-semibold hover:bg-[#111827] active:scale-[0.98] transition-all"
+            className="w-auto inline-flex items-center justify-center px-6 py-2.5 bg-[#071A2F] text-white text-[11px] uppercase tracking-wider font-bold rounded-full hover:bg-[#F5B942] hover:text-[#071A2F] active:scale-[0.97] transition-all shadow-sm hover:shadow"
             onClick={handleAddToCart}
           >
             Add to Cart

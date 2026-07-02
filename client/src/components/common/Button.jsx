@@ -10,7 +10,7 @@ const Button = ({
   icon: Icon,
   ...props
 }) => {
-  const baseStyles = "relative flex items-center justify-center gap-3 py-4 px-8 rounded-2xl font-black uppercase tracking-widest text-xs transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group overflow-hidden";
+  const baseStyles = "relative flex items-center justify-center gap-3 py-4 px-8 rounded-2xl font-extrabold uppercase tracking-widest text-xs transition-all duration-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group overflow-hidden";
 
   const variants = {
     primary: "bg-[#F5B942] text-[#071A2F] hover:bg-[#D99A20] border-2 border-[#F5B942] shadow-[0_10px_24px_rgba(245,185,66,0.28)]",

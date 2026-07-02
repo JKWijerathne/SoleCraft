@@ -10,7 +10,7 @@ const CartSummary = ({ cartItems }) => {
 
   return (
     <div className="bg-white rounded-[2.5rem] border border-[#CBD5E1]/70 p-8 shadow-[0_20px_40px_-15px_rgba(7,26,47,0.05)] sticky top-32">
-      <h2 className="text-xl font-black italic uppercase tracking-tighter text-[#071A2F] mb-6">
+      <h2 className="text-xl font-extrabold uppercase tracking-tighter text-[#071A2F] mb-6">
         Order Summary
       </h2>
 
@@ -30,7 +30,7 @@ const CartSummary = ({ cartItems }) => {
       <div className="border-t border-[#CBD5E1]/60 pt-6 mb-8">
         <div className="flex justify-between items-end">
           <span className="font-bold uppercase tracking-widest text-xs text-[#111827]/60">Total</span>
-          <span className="text-3xl font-black text-[#071A2F]">
+          <span className="text-3xl font-extrabold text-[#071A2F]">
             Rs. {total.toLocaleString()}
           </span>
         </div>
@@ -43,7 +43,7 @@ const CartSummary = ({ cartItems }) => {
 
       <button 
         onClick={() => navigate('/checkout')}
-        className="w-full py-5 bg-[#F5B942] text-[#071A2F] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-[#D99A20] transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#F5B942]/25 active:scale-[0.98]"
+        className="w-full py-5 bg-[#F5B942] text-[#071A2F] font-extrabold uppercase tracking-[0.2em] rounded-2xl hover:bg-[#D99A20] transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#F5B942]/25 active:scale-[0.98]"
       >
         Checkout
         <ArrowRight className="w-5 h-5" />

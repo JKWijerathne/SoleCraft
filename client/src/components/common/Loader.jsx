@@ -35,7 +35,7 @@ const Loader = ({ fullScreen = false, text = 'Loading...' }) => {
         <motion.p
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          className="mt-6 text-xs font-black uppercase tracking-widest text-[#111827]/55"
+          className="mt-6 text-xs font-extrabold uppercase tracking-widest text-[#111827]/55"
         >
           {text}
         </motion.p>

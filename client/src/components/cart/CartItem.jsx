@@ -34,12 +34,12 @@ const CartItem = ({ item }) => {
               {item.category}
             </span>
             <Link to={`/product/${item._id}`} className="hover:text-[#F5B942] transition-colors">
-              <h3 className="text-lg font-black text-[#071A2F] leading-tight">
+              <h3 className="text-lg font-extrabold text-[#071A2F] leading-tight">
                 {item.name}
               </h3>
             </Link>
           </div>
-          <span className="text-lg font-black text-[#071A2F]">
+          <span className="text-lg font-extrabold text-[#071A2F]">
             Rs. {item.price.toLocaleString()}
           </span>
         </div>
@@ -57,7 +57,7 @@ const CartItem = ({ item }) => {
             >
               <Minus size={14} />
             </button>
-            <span className="w-10 text-center font-black text-sm text-[#071A2F]">
+            <span className="w-10 text-center font-extrabold text-sm text-[#071A2F]">
               {item.qty}
             </span>
             <button 
