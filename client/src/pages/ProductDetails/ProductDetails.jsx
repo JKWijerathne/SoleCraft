@@ -49,7 +49,7 @@ const ProductDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8FAFC]">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-transparent">
         <Loader2 className="animate-spin text-[#D99A20] mb-4" size={48} />
         <p className="text-[#111827]/60 font-bold uppercase tracking-widest text-xs">Loading Details...</p>
       </div>
@@ -58,11 +58,11 @@ const ProductDetails = () => {
 
   if (error || !product) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC] px-4">
+      <div className="min-h-screen flex items-center justify-center bg-transparent px-4">
         <div className="p-8 rounded-[2.5rem] bg-red-50 border border-red-200 text-red-600 max-w-2xl w-full flex items-center gap-6 shadow-sm">
           <AlertCircle size={32} />
           <div>
-            <h3 className="font-black uppercase italic text-lg mb-1">Product Not Found</h3>
+            <h3 className="font-extrabold uppercase text-lg mb-1">Product Not Found</h3>
             <p className="text-sm font-medium">{error || 'This product could not be found.'}</p>
           </div>
         </div>
@@ -71,7 +71,7 @@ const ProductDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] py-12 px-4 md:px-6">
+    <div className="min-h-screen bg-transparent py-12 px-4 md:px-6">
       <div className="max-w-7xl mx-auto">
         <button 
           onClick={() => navigate(-1)}
@@ -95,14 +95,14 @@ const ProductDetails = () => {
             />
             {product.countInStock === 0 && (
               <div className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center z-10">
-                <span className="px-6 py-3 bg-[#071A2F] text-white font-black uppercase tracking-widest text-xl rounded-2xl rotate-[-10deg] shadow-2xl">
+                <span className="px-6 py-3 bg-[#071A2F] text-white font-extrabold uppercase tracking-widest text-xl rounded-2xl rotate-[-10deg] shadow-2xl">
                   Out of Stock
                 </span>
               </div>
             )}
             {product.isOnSale && product.countInStock > 0 && (
               <div className="absolute top-8 left-8">
-                <span className="px-5 py-2 bg-[#F5B942] text-[#071A2F] font-black uppercase tracking-widest text-sm rounded-full shadow-lg">
+                <span className="px-5 py-2 bg-[#F5B942] text-[#071A2F] font-extrabold uppercase tracking-widest text-sm rounded-full shadow-lg">
                   Sale
                 </span>
               </div>
@@ -119,12 +119,12 @@ const ProductDetails = () => {
               {product.category}
             </span>
             
-            <h1 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter text-[#071A2F] mb-4">
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight text-[#071A2F] mb-4">
               {product.name}
             </h1>
 
             <div className="flex items-center gap-4 mb-8">
-              <span className="text-3xl font-black text-[#071A2F]">
+              <span className="text-3xl font-extrabold text-[#071A2F]">
                 Rs. {product.price.toLocaleString()}
               </span>
               {/* Optional old price if exists */}
@@ -142,7 +142,7 @@ const ProductDetails = () => {
             {/* Sizes */}
             <div className="mb-8">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-black uppercase tracking-widest text-[#071A2F] text-sm">Select Size</h3>
+                <h3 className="font-extrabold uppercase tracking-widest text-[#071A2F] text-sm">Select Size</h3>
                 <button className="text-xs font-bold text-[#111827]/50 underline hover:text-[#071A2F]">Size Guide</button>
               </div>
               <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
@@ -164,21 +164,21 @@ const ProductDetails = () => {
 
             {/* Quantity */}
             <div className="mb-10">
-              <h3 className="font-black uppercase tracking-widest text-[#071A2F] text-sm mb-4">Quantity</h3>
+              <h3 className="font-extrabold uppercase tracking-widest text-[#071A2F] text-sm mb-4">Quantity</h3>
               <div className="flex items-center w-max bg-white border-2 border-[#CBD5E1]/60 rounded-2xl p-1">
                 <button 
                   onClick={() => setQty(Math.max(1, qty - 1))}
-                  className="p-3 hover:bg-[#F8FAFC] rounded-xl text-[#071A2F] transition-colors"
+                  className="p-3 hover:bg-transparent rounded-xl text-[#071A2F] transition-colors"
                   disabled={product.countInStock === 0}
                 >
                   <Minus size={18} />
                 </button>
-                <span className="w-16 text-center font-black text-lg text-[#071A2F]">
+                <span className="w-16 text-center font-extrabold text-lg text-[#071A2F]">
                   {qty}
                 </span>
                 <button 
                   onClick={() => setQty(Math.min(product.countInStock, qty + 1))}
-                  className="p-3 hover:bg-[#F8FAFC] rounded-xl text-[#071A2F] transition-colors"
+                  className="p-3 hover:bg-transparent rounded-xl text-[#071A2F] transition-colors"
                   disabled={product.countInStock === 0 || qty >= product.countInStock}
                 >
                   <Plus size={18} />
@@ -190,7 +190,7 @@ const ProductDetails = () => {
             <button
               onClick={handleAddToCart}
               disabled={product.countInStock === 0}
-              className={`w-full py-5 rounded-2xl font-black uppercase tracking-[0.2em] flex items-center justify-center gap-3 transition-all duration-300 ${
+              className={`w-full py-5 rounded-2xl font-extrabold uppercase tracking-[0.2em] flex items-center justify-center gap-3 transition-all duration-300 ${
                 product.countInStock > 0 
                   ? 'bg-[#F5B942] text-[#071A2F] hover:bg-[#D99A20] shadow-xl shadow-[#F5B942]/25 active:scale-[0.98]' 
                   : 'bg-[#CBD5E1]/30 text-[#111827]/40 cursor-not-allowed'

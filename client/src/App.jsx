@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
+
+import MainLayout from './components/layout/MainLayout';
+import AdminLayout from './components/layout/AdminLayout';
+
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
@@ -19,6 +21,8 @@ import AdminDashboard from './pages/Admin/AdminDashboard';
 import AdminProducts from './pages/Admin/AdminProducts';
 import AddProduct from './pages/Admin/AddProduct';
 import EditProduct from './pages/Admin/EditProduct';
+import AdminUsers from './pages/Admin/AdminUsers';
+import AdminReviews from './pages/Admin/AdminReviews';
 import OrderSuccess from './pages/Orders/OrderSuccess';
 import Profile from './pages/Profile/Profile';
 import About from './pages/About/About';
@@ -42,9 +46,9 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-[#111827] selection:bg-[#F5B942]/30 selection:text-[#071A2F]">
-        <Navbar />
-        <Routes>
+      <Routes>
+        {/* Public Routes with Main Navbar and Footer */}
+        <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
@@ -66,13 +70,18 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/admin/login" element={<AdminLogin />} />
+        </Route>
+
+        {/* Admin Routes with Sidebar (No Main Navbar) */}
+        <Route element={<AdminLayout />}>
           <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>} />
           <Route path="/admin/add-product" element={<AdminRoute><AddProduct /></AdminRoute>} />
           <Route path="/admin/edit-product/:id" element={<AdminRoute><EditProduct /></AdminRoute>} />
-        </Routes>
-        <Footer />
-      </div>
+          <Route path="/admin/users" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+          <Route path="/admin/reviews" element={<AdminRoute><AdminReviews /></AdminRoute>} />
+        </Route>
+      </Routes>
     </Router>
   );
 }

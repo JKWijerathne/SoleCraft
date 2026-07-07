@@ -61,7 +61,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#F8FAFC] flex items-center justify-center p-4">
+    <div className="min-h-screen relative overflow-hidden bg-transparent flex items-center justify-center p-4">
       {/* Background glows */}
       <div className="absolute top-0 right-0 w-[420px] h-[420px] rounded-full bg-[radial-gradient(circle,rgba(245,185,66,0.18)_0%,transparent_70%)] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[420px] h-[420px] rounded-full bg-[radial-gradient(circle,rgba(7,26,47,0.10)_0%,transparent_70%)] pointer-events-none" />
@@ -98,7 +98,7 @@ const ResetPassword = () => {
               className="w-16 h-16 object-contain"
             />
           </motion.div>
-          <h1 className="text-3xl font-black italic tracking-tighter text-[#071A2F] uppercase mb-2">
+          <h1 className="text-3xl font-extrabold tracking-tighter text-[#071A2F] uppercase mb-2">
             Sole<span className="text-[#F5B942]">Craft</span>
           </h1>
           <p className="text-[#111827]/60 font-medium text-sm">
@@ -238,7 +238,7 @@ const ResetPassword = () => {
                 <button
                   type="submit"
                   disabled={status === 'loading'}
-                  className="w-full bg-[#F5B942] text-[#071A2F] font-black py-4 rounded-xl hover:bg-[#D99A20] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm uppercase tracking-widest shadow-lg shadow-[#F5B942]/25 mt-2"
+                  className="w-full bg-[#F5B942] text-[#071A2F] font-extrabold py-4 rounded-xl hover:bg-[#D99A20] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm uppercase tracking-widest shadow-lg shadow-[#F5B942]/25 mt-2"
                 >
                   {status === 'loading' ? (
                     <>

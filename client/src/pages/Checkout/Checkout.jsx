@@ -119,9 +119,9 @@ const Checkout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC]">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-3xl font-black text-[#071A2F] mb-8">
+        <h1 className="text-3xl font-extrabold text-[#071A2F] mb-8">
           Checkout
         </h1>
 
@@ -130,7 +130,7 @@ const Checkout = () => {
           <div className="lg:col-span-7">
             <form className="space-y-6" onSubmit={placeOrderHandler}>
               <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h2 className="text-xl font-black text-[#071A2F] mb-4">
+                <h2 className="text-xl font-extrabold text-[#071A2F] mb-4">
                   Shipping Details
                 </h2>
 
@@ -236,7 +236,7 @@ const Checkout = () => {
               </div>
 
               <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h2 className="text-xl font-black text-[#071A2F] mb-4">
+                <h2 className="text-xl font-extrabold text-[#071A2F] mb-4">
                   Payment Method
                 </h2>
 
@@ -278,7 +278,7 @@ const Checkout = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#071A2F] hover:bg-[#111827] disabled:opacity-60 disabled:cursor-not-allowed text-white py-4 rounded-xl font-black uppercase tracking-widest transition-all"
+                className="w-full bg-[#071A2F] hover:bg-[#111827] disabled:opacity-60 disabled:cursor-not-allowed text-white py-4 rounded-xl font-extrabold uppercase tracking-widest transition-all"
               >
                 {loading ? 'Creating Order...' : 'Continue to Payment'}
               </button>
@@ -288,7 +288,7 @@ const Checkout = () => {
           {/* Right Column */}
           <div className="lg:col-span-5">
             <div className="bg-white rounded-[2.5rem] border border-gray-200 p-8 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] sticky top-24">
-              <h2 className="text-2xl font-black italic uppercase tracking-tighter text-gray-900 mb-6">
+              <h2 className="text-2xl font-extrabold tracking-tight leading-tight text-gray-900 mb-6">
                 Order Summary
               </h2>
 
@@ -319,7 +319,7 @@ const Checkout = () => {
                         </div>
                       </div>
 
-                      <span className="font-black text-gray-900 text-base flex-shrink-0">
+                      <span className="font-extrabold text-gray-900 text-base flex-shrink-0">
                         Rs. {Number(item.price * quantity).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                       </span>
                     </div>
@@ -346,7 +346,7 @@ const Checkout = () => {
                   <span className="text-sm font-bold uppercase tracking-widest text-gray-500">
                     Total
                   </span>
-                  <span className="text-3xl font-black text-gray-900">
+                  <span className="text-3xl font-extrabold text-gray-900">
                     Rs. {cartTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                   </span>
                 </div>

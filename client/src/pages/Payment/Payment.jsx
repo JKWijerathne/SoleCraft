@@ -187,13 +187,13 @@ const Payment = () => {
   }
 
   return (
-    <main className="min-h-screen bg-[#F8FAFC] px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+    <main className="min-h-screen bg-transparent px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
       <div className="mx-auto max-w-4xl">
         <div className="mb-8 text-center">
-          <p className="mb-2 text-xs font-black uppercase tracking-widest text-[#F5B942]">
+          <p className="mb-2 text-xs font-extrabold uppercase tracking-widest text-[#F5B942]">
             Secure Checkout
           </p>
-          <h1 className="text-3xl font-black tracking-tight text-[#071A2F] sm:text-4xl">
+          <h1 className="text-3xl font-extrabold tracking-tight text-[#071A2F] sm:text-4xl">
             Complete Your Payment
           </h1>
         </div>
@@ -203,12 +203,12 @@ const Payment = () => {
             <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#F5B942]/15 text-[#071A2F]">
               <ReceiptText className="h-5 w-5" />
             </span>
-            <h2 className="text-xl font-black text-[#071A2F]">Order Summary</h2>
+            <h2 className="text-xl font-extrabold text-[#071A2F]">Order Summary</h2>
           </div>
 
           <div className="space-y-4">
             <div className="grid gap-1 border-b border-[#CBD5E1]/70 pb-4 sm:grid-cols-[120px_1fr] sm:items-center">
-              <span className="text-sm font-black uppercase tracking-widest text-[#111827]/45">
+              <span className="text-sm font-extrabold uppercase tracking-widest text-[#111827]/45">
                 Order ID
               </span>
               <span className="min-w-0 break-all text-sm font-bold text-[#111827]/70 sm:text-base">
@@ -217,10 +217,10 @@ const Payment = () => {
             </div>
 
             <div className="flex items-end justify-between gap-4">
-              <span className="text-sm font-black uppercase tracking-widest text-[#111827]/45">
+              <span className="text-sm font-extrabold uppercase tracking-widest text-[#111827]/45">
                 Total
               </span>
-              <span className="text-2xl font-black text-[#071A2F] sm:text-3xl">
+              <span className="text-2xl font-extrabold text-[#071A2F] sm:text-3xl">
                 Rs. {order.totalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
               </span>
             </div>
@@ -244,13 +244,13 @@ const Payment = () => {
             </PayPalScriptProvider>
           ) : order.paymentMethod === 'Card' ? (
             <div className="mx-auto w-full max-w-xl">
-              <div className="mb-6 rounded-2xl border border-[#CBD5E1]/70 bg-[#F8FAFC] p-5">
+              <div className="mb-6 rounded-2xl border border-[#CBD5E1]/70 bg-transparent p-5">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                   <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#071A2F] text-[#F5B942] shadow-lg shadow-[#071A2F]/10">
                     <WalletCards className="h-7 w-7" />
                   </span>
                   <div>
-                    <h2 className="text-xl font-black text-[#071A2F]">
+                    <h2 className="text-xl font-extrabold text-[#071A2F]">
                       Debit / Credit Card
                     </h2>
                     <p className="mt-1 text-sm font-medium leading-6 text-[#111827]/55">
@@ -263,7 +263,7 @@ const Payment = () => {
               <button
                 onClick={handlePayHerePayment}
                 disabled={!payHereReady}
-                className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#071A2F] px-5 py-4 text-sm font-black uppercase tracking-wide text-white shadow-xl shadow-[#071A2F]/15 transition-all hover:bg-[#111827] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed sm:text-base"
+                className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#071A2F] px-5 py-4 text-sm font-extrabold uppercase tracking-wide text-white shadow-xl shadow-[#071A2F]/15 transition-all hover:bg-[#111827] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed sm:text-base"
               >
                 <CreditCard className="h-5 w-5 shrink-0 text-[#F5B942]" />
                 <span className="text-center leading-5">

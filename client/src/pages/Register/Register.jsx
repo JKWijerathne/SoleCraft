@@ -94,7 +94,7 @@ const Register = () => {
             />
           </motion.div>
 
-          <h1 className="text-4xl font-black italic tracking-tighter text-[#071A2F] mb-2 uppercase">
+          <h1 className="text-4xl font-extrabold tracking-tighter text-[#071A2F] mb-2 uppercase">
             Sole<span className="text-[#F5B942]">Craft</span>
           </h1>
 
@@ -274,7 +274,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="md:col-span-2 w-full mt-4 bg-[#F5B942] text-[#071A2F] font-black py-4 rounded-2xl hover:bg-[#D99A20] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm uppercase tracking-widest shadow-lg shadow-[#F5B942]/25"
+            className="md:col-span-2 w-full mt-4 bg-[#F5B942] text-[#071A2F] font-extrabold py-4 rounded-2xl hover:bg-[#D99A20] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm uppercase tracking-widest shadow-lg shadow-[#F5B942]/25"
           >
             {loading ? (
               <>
