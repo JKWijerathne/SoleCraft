@@ -31,7 +31,7 @@ export const protect = async (req, res, next) => {
   }
 };
 
-// ─── Ensure the authenticated user is an admin ───────────────────────────────
+
 export const adminOnly = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     next();
@@ -40,9 +40,7 @@ export const adminOnly = (req, res, next) => {
   }
 };
 
-// ─── Convenience: protect + adminOnly combined ───────────────────────────────
-// Use this as a single middleware stack entry in routes:
-//   router.get('/something', adminMiddleware, handler)
+
 export const adminMiddleware = [protect, adminOnly];
 
 export default adminMiddleware;

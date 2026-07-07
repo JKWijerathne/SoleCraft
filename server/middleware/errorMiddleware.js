@@ -7,7 +7,7 @@ const notFound = (req, res, next) => {
 
 // @desc  General error handler — overrides Express default error handler
 const errorHandler = (err, req, res, next) => {
-  // Sometimes Express sets status 200 even on errors; default to 500
+  
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
 
   res.status(statusCode).json({
