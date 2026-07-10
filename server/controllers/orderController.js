@@ -1,4 +1,5 @@
 import Order from '../models/Order.js';
+import Product from '../models/Product.js';
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -31,6 +32,16 @@ export const createOrder = async (req, res) => {
     });
 
     const createdOrder = await order.save();
+
+    // Deduct stock immediately for all orders
+    await Promise.all(
+      orderItems.map(async (item) => {
+        await Product.findByIdAndUpdate(item.product, {
+          $inc: { countInStock: -Number(item.qty) },
+        });
+      })
+    );
+
     res.status(201).json(createdOrder);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -86,6 +97,9 @@ export const updateOrderToPaid = async (req, res) => {
     };
 
     const updatedOrder = await order.save();
+
+    // Stock is now deducted at order creation for all payment methods
+
     res.json(updatedOrder);
   } catch (error) {
     res.status(500).json({ message: error.message });

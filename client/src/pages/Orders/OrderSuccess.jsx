@@ -40,9 +40,15 @@ const OrderSuccess = () => {
       >
         <Link
           to="/"
-          className="bg-[#111827] text-white px-8 py-3.5 rounded-lg hover:bg-gray-800 transition-colors font-medium shadow-md hover:shadow-lg"
+          className="bg-white text-[#111827] border border-[#CBD5E1]/70 px-8 py-3.5 rounded-lg hover:bg-gray-50 transition-colors font-medium shadow-sm hover:shadow"
         >
           Continue Shopping
+        </Link>
+        <Link
+          to="/my-orders"
+          className="bg-[#111827] text-white px-8 py-3.5 rounded-lg hover:bg-gray-800 transition-colors font-medium shadow-md hover:shadow-lg"
+        >
+          View My Orders
         </Link>
       </motion.div>
     </div>

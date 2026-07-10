@@ -3,9 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrderById, createPayPalOrder, capturePayPalOrder, generatePayHereHash, payOrder } from '../../store/slices/orderSlice';
 import { logout } from '../../store/slices/authSlice';
+import { clearSelectedItems } from '../../store/slices/cartSlice';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import axios from 'axios';
-import { CreditCard, LockKeyhole, ReceiptText, WalletCards } from 'lucide-react';
+import { CreditCard, LockKeyhole, ReceiptText, WalletCards, Truck } from 'lucide-react';
 
 const Payment = () => {
   const { id: orderId } = useParams();
@@ -89,6 +90,7 @@ const Payment = () => {
   const onPayPalApprove = async (data) => {
     try {
       await dispatch(capturePayPalOrder({ orderId, paypalOrderId: data.orderID })).unwrap();
+      dispatch(clearSelectedItems());
       navigate('/order-success');
     } catch (err) {
       console.error('Failed to capture order:', err);
@@ -135,16 +137,15 @@ const Payment = () => {
 
       // 3. Define Callbacks
       window.payhere.onCompleted = async function onCompleted(orderId) {
-        // Note: PayHere sends orderId back
         try {
-          // Update order status to paid in backend
           const paymentResult = {
-            id: orderId, // Or PayHere generated payment ID if available, usually not passed in onCompleted directly
+            id: orderId,
             status: 'COMPLETED',
             update_time: new Date().toISOString(),
             email_address: user?.email,
           };
           await dispatch(payOrder({ orderId: order._id, paymentResult })).unwrap();
+          dispatch(clearSelectedItems());
           navigate('/order-success');
         } catch (error) {
            console.error("Failed to update order status:", error);
@@ -169,6 +170,24 @@ const Payment = () => {
       alert('Could not initiate payment. Please try again.');
     }
   };
+  // --- Cash on Delivery Logic ---
+  const handleCODConfirm = async () => {
+    try {
+      const paymentResult = {
+        id: `COD-${order._id}`,
+        status: 'PENDING_DELIVERY',
+        update_time: new Date().toISOString(),
+        email_address: user?.email,
+      };
+      await dispatch(payOrder({ orderId: order._id, paymentResult })).unwrap();
+      dispatch(clearSelectedItems());
+      navigate('/order-success');
+    } catch (err) {
+      console.error('Failed to confirm COD order:', err);
+      alert('Could not confirm order. Please try again.');
+    }
+  };
+
 
   if (loading || (!clientId && order?.paymentMethod === 'PayPal') || !order) {
     return (
@@ -274,6 +293,57 @@ const Payment = () => {
               <div className="mt-4 flex items-center justify-center gap-2 text-xs font-bold text-[#111827]/45">
                 <LockKeyhole className="h-4 w-4" />
                 Secure payment handled by PayHere
+              </div>
+            </div>
+          ) : order.paymentMethod === 'COD' ? (
+            <div className="mx-auto w-full max-w-xl">
+              <div className="mb-6 rounded-2xl border border-[#CBD5E1]/70 bg-transparent p-5">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#F5B942] text-[#071A2F] shadow-lg shadow-[#F5B942]/20">
+                    <Truck className="h-7 w-7" />
+                  </span>
+                  <div>
+                    <h2 className="text-xl font-extrabold text-[#071A2F]">Cash on Delivery</h2>
+                    <p className="mt-1 text-sm font-medium leading-6 text-[#111827]/55">
+                      Your order is ready to be placed. Pay with cash when it arrives at your door.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mb-6 rounded-2xl border border-[#CBD5E1]/70 bg-[#F9FAFB] p-5 space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="font-semibold text-[#111827]/55">Delivery Address</span>
+                  <span className="font-bold text-[#071A2F] text-right max-w-[55%]">
+                    {order.shippingAddress?.address}, {order.shippingAddress?.city}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-semibold text-[#111827]/55">Phone</span>
+                  <span className="font-bold text-[#071A2F]">{order.shippingAddress?.phone}</span>
+                </div>
+                <div className="flex justify-between border-t border-[#CBD5E1]/70 pt-3 mt-1">
+                  <span className="font-extrabold text-[#111827]/55 uppercase tracking-widest text-xs">Amount Due on Delivery</span>
+                  <span className="font-extrabold text-[#071A2F] text-lg">
+                    Rs. {order.totalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={handleCODConfirm}
+                disabled={loading}
+                className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#F5B942] px-5 py-4 text-sm font-extrabold uppercase tracking-wide text-[#071A2F] shadow-xl shadow-[#F5B942]/20 transition-all hover:bg-[#e0a830] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed sm:text-base"
+              >
+                <Truck className="h-5 w-5 shrink-0" />
+                <span className="text-center leading-5">
+                  {loading ? 'Confirming...' : 'Confirm Order'}
+                </span>
+              </button>
+
+              <div className="mt-4 flex items-center justify-center gap-2 text-xs font-bold text-[#111827]/45">
+                <LockKeyhole className="h-4 w-4" />
+                Your order details are securely stored
               </div>
             </div>
           ) : (
