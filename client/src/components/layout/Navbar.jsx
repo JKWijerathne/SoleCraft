@@ -8,6 +8,7 @@ import {
   X,
   ChevronDown,
   User,
+  ClipboardList,
 } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../../store/slices/authSlice';
@@ -238,6 +239,18 @@ const Navbar = () => {
                 )}
 
                 <Link
+                  to="/my-orders"
+                  className={`inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#CBD5E1]/70 transition-all group shadow-sm ${location.pathname === '/my-orders'
+                      ? 'bg-white text-[#071A2F] border-[#F5B942]'
+                      : 'bg-[#F8FAFC] hover:bg-white text-[#111827]/60 hover:text-[#071A2F]'
+                    }`}
+                  aria-label="My Orders"
+                  title="My Orders"
+                >
+                  <ClipboardList className="w-4 h-4" />
+                </Link>
+
+                <Link
                   to="/profile"
                   className={`inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#CBD5E1]/70 transition-all group shadow-sm ${location.pathname === '/profile'
                       ? 'bg-white text-[#071A2F] border-[#F5B942]'
@@ -411,6 +424,22 @@ const Navbar = () => {
                     </AnimatePresence>
                   </div>
                 ))}
+                {user && (
+                  <div className="flex flex-col border-b border-[#CBD5E1]/60">
+                    <div className="flex items-center justify-between py-3">
+                      <Link
+                        to="/my-orders"
+                        onClick={() => setIsOpen(false)}
+                        className={`transition-colors flex-1 ${location.pathname === '/my-orders'
+                            ? 'text-[#071A2F] font-bold'
+                            : 'hover:text-[#071A2F]'
+                          }`}
+                      >
+                        My Orders
+                      </Link>
+                    </div>
+                  </div>
+                )}
               </div>
             </motion.div>
           </>

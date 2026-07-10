@@ -24,6 +24,7 @@ import EditProduct from './pages/Admin/EditProduct';
 import AdminUsers from './pages/Admin/AdminUsers';
 import AdminReviews from './pages/Admin/AdminReviews';
 import OrderSuccess from './pages/Orders/OrderSuccess';
+import MyOrders from './pages/Orders/MyOrders';
 import Profile from './pages/Profile/Profile';
 import About from './pages/About/About';
 import Contact from './pages/Contact/Contact';
@@ -64,6 +65,7 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment/:id" element={<Payment />} />
           <Route path="/order-success" element={<OrderSuccess />} />
+          <Route path="/my-orders" element={<MyOrders />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

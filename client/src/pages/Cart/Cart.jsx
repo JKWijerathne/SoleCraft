@@ -1,5 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleAllSelection } from '../../store/slices/cartSlice';
 import { Link } from 'react-router-dom';
 import CartItem from '../../components/cart/CartItem';
 import CartSummary from '../../components/cart/CartSummary';
@@ -8,6 +9,13 @@ import { motion } from 'framer-motion';
 
 const Cart = () => {
   const { cartItems } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  const allSelected = cartItems.length > 0 && cartItems.every((item) => item.isSelected !== false);
+
+  const handleSelectAll = () => {
+    dispatch(toggleAllSelection(!allSelected));
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -55,7 +63,22 @@ const Cart = () => {
           <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-2">
             <div className="bg-white rounded-[2.5rem] border border-[#CBD5E1]/70 p-6 md:p-10 shadow-sm">
               <div className="hidden sm:flex justify-between items-center pb-4 border-b border-[#CBD5E1]/60 mb-2">
-                <span className="font-bold uppercase tracking-widest text-xs text-[#111827]/60">Product</span>
+                <div className="flex items-center gap-3 w-32">
+                  <label className="flex items-center cursor-pointer relative">
+                    <input
+                      type="checkbox"
+                      checked={allSelected}
+                      onChange={handleSelectAll}
+                      className="peer h-5 w-5 cursor-pointer transition-all appearance-none rounded-md shadow hover:shadow-md border border-[#CBD5E1] checked:bg-[#071A2F] checked:border-[#071A2F]"
+                    />
+                    <span className="absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </span>
+                  </label>
+                  <span className="font-bold uppercase tracking-widest text-xs text-[#111827]/60">All</span>
+                </div>
                 <span className="font-bold uppercase tracking-widest text-xs text-[#111827]/60 text-right w-32">Total</span>
               </div>
               

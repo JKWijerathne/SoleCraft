@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { createOrder, resetOrder } from '../../store/slices/orderSlice';
 import { logout, updateProfile } from '../../store/slices/authSlice';
+import { clearSelectedItems } from '../../store/slices/cartSlice';
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,9 @@ const Checkout = () => {
   const API_BASE_URL =
     import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
-  const cartTotal = cartItems.reduce((total, item) => {
+  const selectedItems = cartItems.filter((item) => item.isSelected !== false);
+
+  const cartTotal = selectedItems.reduce((total, item) => {
     const quantity = item.qty || item.quantity || 1;
     return total + Number(item.price || 0) * Number(quantity);
   }, 0);
@@ -40,14 +43,15 @@ const Checkout = () => {
       return;
     }
 
-    if (cartItems.length === 0) {
-      navigate('/cart');
-      return;
-    }
-
     if (success && order?._id) {
-      navigate(`/payment/${order._id}`);
-      dispatch(resetOrder());
+      dispatch(clearSelectedItems());
+      if (order.paymentMethod === 'COD') {
+        dispatch(resetOrder());
+        navigate('/order-success');
+      } else {
+        navigate(`/payment/${order._id}`);
+        dispatch(resetOrder());
+      }
       return;
     }
 
@@ -59,7 +63,7 @@ const Checkout = () => {
         navigate('/login');
       }
     }
-  }, [success, order, error, cartItems.length, navigate, dispatch, user, token]);
+  }, [success, order, error, navigate, dispatch, user, token]);
 
   const handleChange = (e) => {
     setShippingDetails({
@@ -81,8 +85,8 @@ const Checkout = () => {
   const placeOrderHandler = (e) => {
     e.preventDefault();
 
-    if (cartItems.length === 0) {
-      alert('Your cart is empty.');
+    if (selectedItems.length === 0) {
+      alert('Please select at least one item to checkout.');
       navigate('/cart');
       return;
     }
@@ -92,7 +96,7 @@ const Checkout = () => {
     }
 
     const orderData = {
-      orderItems: cartItems.map((item) => ({
+      orderItems: selectedItems.map((item) => ({
         product: item._id,
         name: item.name,
         image: item.image || item.images?.[0],
@@ -241,7 +245,7 @@ const Checkout = () => {
                 </h2>
 
                 <div className="space-y-3">
-                  <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#F5B942]">
+                  <label className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-colors ${ paymentMethod === 'PayPal' ? 'border-[#F5B942] bg-[#F5B942]/5' : 'border-gray-200 hover:border-[#F5B942]' }`}>
                     <input
                       type="radio"
                       name="paymentMethod"
@@ -250,12 +254,10 @@ const Checkout = () => {
                       onChange={(e) => setPaymentMethod(e.target.value)}
                       className="accent-[#F5B942]"
                     />
-                    <span className="font-bold text-gray-800">
-                      PayPal
-                    </span>
+                    <span className="font-bold text-gray-800">PayPal</span>
                   </label>
 
-                  <label className="flex items-center gap-3 p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-[#F5B942]">
+                  <label className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-colors ${ paymentMethod === 'Card' ? 'border-[#F5B942] bg-[#F5B942]/5' : 'border-gray-200 hover:border-[#F5B942]' }`}>
                     <input
                       type="radio"
                       name="paymentMethod"
@@ -264,14 +266,27 @@ const Checkout = () => {
                       onChange={(e) => setPaymentMethod(e.target.value)}
                       className="accent-[#F5B942]"
                     />
-                    <span className="font-bold text-gray-800">
-                      Debit / Credit Card
-                    </span>
+                    <span className="font-bold text-gray-800">Debit / Credit Card</span>
+                  </label>
+
+                  <label className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-colors ${ paymentMethod === 'COD' ? 'border-[#F5B942] bg-[#F5B942]/5' : 'border-gray-200 hover:border-[#F5B942]' }`}>
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value="COD"
+                      checked={paymentMethod === 'COD'}
+                      onChange={(e) => setPaymentMethod(e.target.value)}
+                      className="accent-[#F5B942]"
+                    />
+                    <div className="flex flex-col">
+                      <span className="font-bold text-gray-800">Cash on Delivery</span>
+                      <span className="text-xs text-gray-500 mt-0.5">Pay when your order arrives at your door</span>
+                    </div>
                   </label>
                 </div>
 
                 <p className="text-sm text-gray-500 mt-3">
-                  PayPal is for PayPal account payments. Debit and credit card payments are securely handled through PayHere.
+                  PayPal is for PayPal account payments. Card payments are handled via PayHere. Cash on Delivery is available for all Sri Lanka locations.
                 </p>
               </div>
 
@@ -280,26 +295,25 @@ const Checkout = () => {
                 disabled={loading}
                 className="w-full bg-[#071A2F] hover:bg-[#111827] disabled:opacity-60 disabled:cursor-not-allowed text-white py-4 rounded-xl font-extrabold uppercase tracking-widest transition-all"
               >
-                {loading ? 'Creating Order...' : 'Continue to Payment'}
+                {loading ? 'Creating Order...' : paymentMethod === 'COD' ? 'Place Order (Cash on Delivery)' : 'Continue to Payment'}
               </button>
             </form>
           </div>
 
           {/* Right Column */}
-          <div className="lg:col-span-5">
-            <div className="bg-white rounded-[2.5rem] border border-gray-200 p-8 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] sticky top-24">
-              <h2 className="text-2xl font-extrabold tracking-tight leading-tight text-gray-900 mb-6">
+          <div className="lg:col-span-5 relative">
+            <div className="rounded-[2.5rem] border border-[#CBD5E1]/70 bg-white p-8 shadow-sm lg:sticky lg:top-32">
+              <h2 className="mb-6 text-xl font-extrabold uppercase tracking-tighter text-[#071A2F]">
                 Order Summary
               </h2>
-
-              <div className="space-y-2 mb-6">
-                {cartItems.map((item) => {
+              <div className="mb-6 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar space-y-4">
+                {selectedItems.map((item, index) => {
                   const quantity = item.qty || item.quantity || 1;
                   const image = item.image || item.images?.[0];
 
                   return (
                     <div
-                      key={`${item._id}-${item.size || 'default'}`}
+                      key={`${item._id}-${item.size || 'default'}-${index}`}
                       className="flex justify-between items-center text-sm py-3 border-b border-gray-100 last:border-0"
                     >
                       <div className="flex items-center gap-4 flex-1 min-w-0">
@@ -308,7 +322,6 @@ const Checkout = () => {
                           alt={item.name}
                           className="w-16 h-16 object-cover rounded-xl flex-shrink-0 border border-gray-100 shadow-sm"
                         />
-
                         <div className="flex flex-col flex-1 min-w-0 pr-4">
                           <p className="font-bold text-gray-900 truncate">
                             {item.name}
@@ -318,7 +331,6 @@ const Checkout = () => {
                           </p>
                         </div>
                       </div>
-
                       <span className="font-extrabold text-gray-900 text-base flex-shrink-0">
                         Rs. {Number(item.price * quantity).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                       </span>
@@ -353,7 +365,9 @@ const Checkout = () => {
               </div>
 
               <p className="text-xs text-gray-500 mt-6 leading-relaxed">
-                After clicking continue, you will be redirected to the secure payment page.
+                {paymentMethod === 'COD'
+                  ? 'Your order will be placed and payment will be collected upon delivery.'
+                  : 'After clicking continue, you will be redirected to the secure payment page.'}
               </p>
             </div>
           </div>

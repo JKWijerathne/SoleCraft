@@ -44,11 +44,16 @@ const cartSlice = createSlice({
             const existItem = state.cartItems.find((x) => x._id === item._id && x.size === item.size);
 
             if (existItem) {
-                state.cartItems = state.cartItems.map((x) =>
-                    x._id === existItem._id && x.size === existItem.size ? { ...x, qty: x.qty + item.qty } : x
-                );
+                state.cartItems = state.cartItems.map((x) => {
+                    if (x._id === existItem._id && x.size === existItem.size) {
+                        const newQty = x.qty + item.qty;
+                        return { ...x, qty: newQty > item.countInStock ? item.countInStock : newQty, isSelected: true };
+                    }
+                    return x;
+                });
             } else {
-                state.cartItems = [...state.cartItems, item];
+                const initialQty = item.qty > item.countInStock ? item.countInStock : item.qty;
+                state.cartItems = [...state.cartItems, { ...item, qty: initialQty, isSelected: true }];
             }
             saveCart(state.cartOwnerId, state.cartItems);
         },
@@ -67,6 +72,22 @@ const cartSlice = createSlice({
         clearCart: (state) => {
             state.cartItems = [];
             localStorage.removeItem(getCartStorageKey(state.cartOwnerId));
+        },
+        toggleItemSelection: (state, action) => {
+            const { _id, size } = action.payload;
+            state.cartItems = state.cartItems.map((x) =>
+                x._id === _id && x.size === size ? { ...x, isSelected: !x.isSelected } : x
+            );
+            saveCart(state.cartOwnerId, state.cartItems);
+        },
+        toggleAllSelection: (state, action) => {
+            const isSelected = action.payload;
+            state.cartItems = state.cartItems.map((x) => ({ ...x, isSelected }));
+            saveCart(state.cartOwnerId, state.cartItems);
+        },
+        clearSelectedItems: (state) => {
+            state.cartItems = state.cartItems.filter((x) => !x.isSelected);
+            saveCart(state.cartOwnerId, state.cartItems);
         },
     },
     extraReducers: (builder) => {
@@ -89,5 +110,5 @@ const cartSlice = createSlice({
     },
 });
 
-export const { addToCart, updateQuantity, removeFromCart, clearCart } = cartSlice.actions;
+export const { addToCart, updateQuantity, removeFromCart, clearCart, toggleItemSelection, toggleAllSelection, clearSelectedItems } = cartSlice.actions;
 export default cartSlice.reducer;

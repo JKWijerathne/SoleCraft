@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom';
 
 const CartSummary = ({ cartItems }) => {
   const navigate = useNavigate();
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
+  const selectedItems = cartItems.filter(item => item.isSelected !== false);
+  const subtotal = selectedItems.reduce((acc, item) => acc + item.price * item.qty, 0);
+  const itemCount = selectedItems.reduce((a, c) => a + c.qty, 0);
   const shippingPrice = 0;
   const total = subtotal + shippingPrice;
 
@@ -16,7 +18,7 @@ const CartSummary = ({ cartItems }) => {
 
       <div className="space-y-4 mb-8">
         <div className="flex justify-between text-sm font-medium text-[#111827]/70">
-          <span>Subtotal ({cartItems.reduce((a, c) => a + c.qty, 0)} items)</span>
+          <span>Subtotal ({itemCount} items)</span>
           <span className="font-bold text-[#071A2F]">Rs. {subtotal.toLocaleString()}</span>
         </div>
         <div className="flex justify-between text-sm font-medium text-[#111827]/70">
@@ -43,7 +45,8 @@ const CartSummary = ({ cartItems }) => {
 
       <button 
         onClick={() => navigate('/checkout')}
-        className="w-full py-5 bg-[#F5B942] text-[#071A2F] font-extrabold uppercase tracking-[0.2em] rounded-2xl hover:bg-[#D99A20] transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#F5B942]/25 active:scale-[0.98]"
+        disabled={selectedItems.length === 0}
+        className="w-full py-5 bg-[#F5B942] text-[#071A2F] font-extrabold uppercase tracking-[0.2em] rounded-2xl hover:bg-[#D99A20] transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#F5B942]/25 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#F5B942] disabled:active:scale-100"
       >
         Checkout
         <ArrowRight className="w-5 h-5" />
